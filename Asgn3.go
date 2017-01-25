@@ -110,3 +110,23 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 
 	return valAsbytes, nil
 }
+
+func (t *SimpleChaincode) accept(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+	var AccountName, jsonResp string   
+	var err error
+
+	if len(args) != 1 {
+		return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
+	}
+
+	AccountName = args[0]
+    //Balance = args[1]
+	valAsbytes, err := stub.GetState(AccountName)
+
+	if err != nil {
+		jsonResp = "{\"Error\":\"Failed to get state for " + AccountName + "\"}"
+		return nil, errors.New(jsonResp)
+	}
+
+	return valAsbytes, nil
+}
