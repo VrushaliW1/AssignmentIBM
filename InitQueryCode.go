@@ -57,62 +57,58 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 
 // Invoke isur entry point to invoke a chaincode function
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-	fmt.Println("invoke is running " + function)
-    var AccountA, AccountB string    // Entities
-	var BalanceA, BalanceB int // Asset holdings
+	fmt.Printf("Running invoke")
+	
+	var A, B string    // Entities
+	var Aval, Bval int // Asset holdings
 	var X int          // Transaction value
 	var err error
 
-    if len(args) != 3 {
+	if len(args) != 3 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 3")
 	}
 
-	AccountA = args[0]
-	AccountB = args[1]
-    Avalbytes, err := stub.GetState(AccountA)
+	A = args[0]
+	B = args[1]
+
+	// Get the state from the ledger
+	// TODO: will be nice to have a GetAllState call to ledger
+	Avalbytes, err := stub.GetState(A)
 	if err != nil {
 		return nil, errors.New("Failed to get state")
 	}
-    if Avalbytes == nil {
+	if Avalbytes == nil {
 		return nil, errors.New("Entity not found")
 	}
-    BalanceA, _ = strconv.Atoi(string(Avalbytes))
-    
-    Bvalbytes, err := stub.GetState(AccountB)
+	Aval, _ = strconv.Atoi(string(Avalbytes))
+
+	Bvalbytes, err := stub.GetState(B)
 	if err != nil {
 		return nil, errors.New("Failed to get state")
 	}
 	if Bvalbytes == nil {
 		return nil, errors.New("Entity not found")
 	}
-	BalanceB, _ = strconv.Atoi(string(Bvalbytes))
-    X, err = strconv.Atoi(args[2])
-	BalanceA = BalanceA - X
-	BalanceB = BalanceB + X
-	fmt.Printf("BalanceA = %d, BalanceB = %d\n", BalanceA, BalanceB)
+	Bval, _ = strconv.Atoi(string(Bvalbytes))
+
+	// Perform the execution
+	X, err = strconv.Atoi(args[2])
+	Aval = Aval - X
+	Bval = Bval + X
+	fmt.Printf("Aval = %d, Bval = %d\n", Aval, Bval)
 
 	// Write the state back to the ledger
-	err = stub.PutState(AccountA, []byte(strconv.Itoa(BalanceA)))
+	err = stub.PutState(A, []byte(strconv.Itoa(Aval)))
 	if err != nil {
 		return nil, err
 	}
 
-	err = stub.PutState(AccountB, []byte(strconv.Itoa(BalanceB)))
+	err = stub.PutState(B, []byte(strconv.Itoa(Bval)))
 	if err != nil {
 		return nil, err
 	}
-	jsonResp := "{\"Name\":\"" + AccountA + "\",\"Amount\":\"" + string(Avalbytes) + \"Name\":\"" + AccountB + "\",\"Amount\":\"" + string(Bvalbytes) + "\"}"
-	fmt.Printf("Query Response:%s\n", jsonResp)
+
 	return nil, nil
-	// Handle different functions
-	/*if function == "init" {
-		return t.Init(stub, "init", args)
-	} else if function == "write" {
-		return t.write(stub, args)
-	}
-	fmt.Println("invoke did not find func: " + function)
-
-	return nil, errors.New("Received unknown function invocation: " + function)*/
 }
 
 // Query is our entry point for queries
