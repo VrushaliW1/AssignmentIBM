@@ -44,7 +44,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
      
     AccountB = args[2]
     BalanceB, err = strconv.Atoi(args[3])
-	err1 := stub.PutState("hello_world", []byte(args[0]))
+	//err1 := stub.PutState("hello_world", []byte(args[0]))
 
 	if err != nil {
 		return nil, err
