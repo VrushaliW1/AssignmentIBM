@@ -84,7 +84,9 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 
 	err = stub.PutState(AccountA, []byte(strconv.Itoa(BalanceA)))
     err = stub.PutState(AccountB, []byte(strconv.Itoa(BalanceB)))
-
+	if err != nil {
+		return nil, err
+	}
 	return Avalbytes, nil
 }
 
