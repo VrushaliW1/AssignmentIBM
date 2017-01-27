@@ -108,7 +108,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return nil, err
 	}
 
-	return nil, nil
+	return Avalbytes, nil
 }
 
 // Query is our entry point for queries
