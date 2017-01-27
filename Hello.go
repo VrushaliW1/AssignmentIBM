@@ -92,8 +92,8 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	}
 
 	jsonResp := "{\"Name\":\"" + Account + "\",\"Amount\":\"" + string(Avalbytes) + "\"}"
-	/*fmt.Printf("Query Response:%s\n", jsonResp)
-	// Handle different functions
+	fmt.Printf("Query Response:%s\n", jsonResp)
+	/* Handle different functions
 	if function == "read" { //read a variable
 		return t.read(stub, args)
 	}
