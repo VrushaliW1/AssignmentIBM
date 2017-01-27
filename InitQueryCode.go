@@ -58,16 +58,60 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 // Invoke isur entry point to invoke a chaincode function
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
+    var AccountA, AccountB string    // Entities
+	var BalanceA, BalanceB int // Asset holdings
+	var X int          // Transaction value
+	var err error
 
+    if len(args) != 3 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 3")
+	}
+
+	AccountA = args[0]
+	AccountB = args[1]
+    Avalbytes, err := stub.GetState(AccountA)
+	if err != nil {
+		return nil, errors.New("Failed to get state")
+	}
+    if Avalbytes == nil {
+		return nil, errors.New("Entity not found")
+	}
+    BalanceA, _ = strconv.Atoi(string(Avalbytes))
+    
+    Bvalbytes, err := stub.GetState(AccountB)
+	if err != nil {
+		return nil, errors.New("Failed to get state")
+	}
+	if Bvalbytes == nil {
+		return nil, errors.New("Entity not found")
+	}
+	BalanceB, _ = strconv.Atoi(string(Bvalbytes))
+    X, err = strconv.Atoi(args[2])
+	BalanceA = BalanceA - X
+	BalanceB = BalanceB + X
+	fmt.Printf("BalanceA = %d, BalanceB = %d\n", BalanceA, BalanceB)
+
+	// Write the state back to the ledger
+	err = stub.PutState(AccountA, []byte(strconv.Itoa(BalanceA)))
+	if err != nil {
+		return nil, err
+	}
+
+	err = stub.PutState(AccountB, []byte(strconv.Itoa(BalanceB)))
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
 	// Handle different functions
-	if function == "init" {
+	/*if function == "init" {
 		return t.Init(stub, "init", args)
 	} else if function == "write" {
 		return t.write(stub, args)
 	}
 	fmt.Println("invoke did not find func: " + function)
 
-	return nil, errors.New("Received unknown function invocation: " + function)
+	return nil, errors.New("Received unknown function invocation: " + function)*/
 }
 
 // Query is our entry point for queries
