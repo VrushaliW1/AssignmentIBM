@@ -101,7 +101,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	if err != nil {
 		return nil, err
 	}
-
+	jsonResp := "{\"Name\":\"" + AccountA + "\",\"Amount\":\"" + string(Avalbytes) + \"Name\":\"" + AccountB + "\",\"Amount\":\"" + string(Bvalbytes) + "\"}"
+	fmt.Printf("Query Response:%s\n", jsonResp)
 	return nil, nil
 	// Handle different functions
 	/*if function == "init" {
