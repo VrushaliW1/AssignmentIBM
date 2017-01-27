@@ -64,7 +64,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	var X int          // Transaction value	
 
 	AccountA = args[0]
-	AccountBB = args[1]
+	AccountB = args[1]
 
 	// Get the state from the ledger
 	// TODO: will be nice to have a GetAllState call to ledger
@@ -72,7 +72,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	
 	BalanceA, _ = strconv.Atoi(string(Avalbytes))
 
-	BalanceB, err := stub.GetState(AccountB)
+	Bvalbytes, err := stub.GetState(AccountB)
 	
 	BalanceB, _ = strconv.Atoi(string(Bvalbytes))
 
