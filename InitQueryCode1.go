@@ -30,8 +30,7 @@ type Account struct{
 	Account_BankNumber string
 }
 
-func main() {    
-    var AccountList [20]Account
+func main() {	
 	err := shim.Start(new(SimpleChaincode))
 	if err != nil {
 		fmt.Printf("Error starting Simple chaincode: %s", err)
@@ -40,13 +39,12 @@ func main() {
 
 // Init resets all the things
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {   
-    
+    var AccountList[] Account
 	var AccountA1 Account
     var err error
 	var position int
 	var Balance int
-	var AccountName, BankNumber string
-	var AccountList[] Account
+	var AccountName, BankNumber string	
 	if len(args) != 4{
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}  
