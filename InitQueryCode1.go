@@ -60,7 +60,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	}
     //position = len(AccountList)
     //if(position != 20){
-       //AccountList[0] = AccountA1       
+       AccountList[0]=AccountA1        
     //}
 	return nil, nil
 }
