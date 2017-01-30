@@ -69,8 +69,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 // Query is our entry point for queries
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
-	fmt.Println("query is running " + function)
-    var AccountDeatils Account 
+	fmt.Println("query is running " + function)   
 	var err error
 	var AccName string
     if len(args) != 1 {
