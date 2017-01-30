@@ -24,7 +24,14 @@ import (
 type SimpleChaincode struct {
 }
 
-func main() {
+type Account struct{
+	Account_Name string
+	Account_Balance int
+	Account_BankNumber int
+}
+
+func main() {    
+    var AccountList [20]Account
 	err := shim.Start(new(SimpleChaincode))
 	if err != nil {
 		fmt.Printf("Error starting Simple chaincode: %s", err)
@@ -32,27 +39,60 @@ func main() {
 }
 
 // Init resets all the things
-func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-    var BalanceA, BalanceB int
-    var AccountA, AccountB string
+func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {   
+    
+	var AccountA1 Account
     var err error
-	if len(args) != 4 {
+	var position int
+	var Balance, BankNumber int
+	var AccountName string
+	var AccountList[] Account
+	if len(args) != 4{
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
-	}
-    AccountA = args[0]
-    BalanceA, err = strconv.Atoi(args[1])
-     
-    AccountB = args[2]
-    BalanceB, err = strconv.Atoi(args[3])
-	//err1 := stub.PutState("hello_world", []byte(args[0]))
-
+	}  
+	AccountName = args[0]
+    Balance, err = strconv.Atoi(args[1])
+	BankNumber, err = strconv.Atoi(args[2])
+	err = stub.PutState(AccountName, []byte(strconv.Itoa(Balance),(strconv.Itoa(BankNumber))))	
+	
+	AccountA1.Account_Name = AccountName
+	AccountA1.Account_Balance = Balance
+	AccountA1.Account_BankNumber = BankNumber    
 	if err != nil {
 		return nil, err
 	}
-    fmt.Printf("BalanceA = %d, BalanceB = %d\n", BalanceA, BalanceB)
-    err = stub.PutState(AccountA, []byte(strconv.Itoa(BalanceA)))
-    err = stub.PutState(AccountB, []byte(strconv.Itoa(BalanceB)))
+    position = len(AccountList)
+    if(position != 20){
+       AccountList[position] = AccountA1       
+    }
 	return nil, nil
+}
+
+// Query is our entry point for queries
+func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+
+	fmt.Println("query is running " + function)
+    var AccountDeatils Account 
+	var err error
+    if len(args) != 1 {
+		return nil, errors.New("Incorrect number of arguments. Expecting name of the person to query")
+	}
+    AccountDeatils.Account_Name = args[0]
+    Avalbytes, err := stub.GetState(AccountDeatils.Account_Name)
+    if err != nil {
+		jsonResp := "{\"Error\":\"Failed to get state for " + AccountDeatils.Account_Name + "\"}"
+		return nil, errors.New(jsonResp)
+	}
+
+	if Avalbytes == nil {
+		jsonResp := "{\"Error\":\"Nil amount for " + AccountDeatils.Account_Name + "\"}"
+		return nil, errors.New(jsonResp)
+	}
+
+	jsonResp := "{\"Name\":\"" + AccountDeatils.Account_Name + "\",\"Amount\":\"" + string(Avalbytes) + "\"}"
+	fmt.Printf("Query Response:%s\n", jsonResp)
+	
+    return Avalbytes, nil
 }
 
 // Invoke isur entry point to invoke a chaincode function
@@ -88,33 +128,6 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return nil, err
 	}
 	return Avalbytes, nil
-}
-
-// Query is our entry point for queries
-func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-
-	fmt.Println("query is running " + function)
-    var Account string 
-	var err error
-    if len(args) != 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting name of the person to query")
-	}
-    Account = args[0]
-    Avalbytes, err := stub.GetState(Account)
-    if err != nil {
-		jsonResp := "{\"Error\":\"Failed to get state for " + Account + "\"}"
-		return nil, errors.New(jsonResp)
-	}
-
-	if Avalbytes == nil {
-		jsonResp := "{\"Error\":\"Nil amount for " + Account + "\"}"
-		return nil, errors.New(jsonResp)
-	}
-
-	jsonResp := "{\"Name\":\"" + Account + "\",\"Amount\":\"" + string(Avalbytes) + "\"}"
-	fmt.Printf("Query Response:%s\n", jsonResp)
-	
-    return Avalbytes, nil
 }
 
 // write - invoke function to write key/value pair
