@@ -39,10 +39,10 @@ func main() {
 
 // Init resets all the things
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {   
-    var AccountList[] Account
-	var AccountA1 Account
+    //var AccountList[] Account
+	//var AccountA1 Account
     var err error
-	var position int
+	//var position int
 	var Balance int
 	var AccountName, BankNumber string	
 	if len(args) != 4{
@@ -53,16 +53,16 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	BankNumber = args[2]
 	err = stub.PutState(AccountName, []byte(strconv.Itoa(Balance)))	
 	
-	AccountA1.Account_Name = AccountName
+	/*AccountA1.Account_Name = AccountName
 	AccountA1.Account_Balance = Balance
-	AccountA1.Account_BankNumber = BankNumber    
+	AccountA1.Account_BankNumber = BankNumber */   
 	if err != nil {
 		return nil, err
 	}
-    position = len(AccountList)
+    /*position = len(AccountList)
     if(position != 20){
        AccountList[position] = AccountA1       
-    }
+    }*/
 	return nil, nil
 }
 
