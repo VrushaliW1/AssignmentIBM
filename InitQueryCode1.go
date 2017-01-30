@@ -27,7 +27,7 @@ type SimpleChaincode struct {
 type Account struct{
 	Account_Name string
 	Account_Balance int
-	Account_BankNumber int
+	Account_BankNumber string
 }
 
 func main() {    
@@ -44,16 +44,16 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	var AccountA1 Account
     var err error
 	var position int
-	var Balance, BankNumber int
-	var AccountName string
+	var Balance int
+	var AccountName, BankNumber string
 	var AccountList[] Account
 	if len(args) != 4{
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}  
 	AccountName = args[0]
     Balance, err = strconv.Atoi(args[1])
-	BankNumber, err = strconv.Atoi(args[2])
-	err = stub.PutState(AccountName, []byte(strconv.Itoa(Balance),(strconv.Itoa(BankNumber))))	
+	BankNumber = args[2]
+	err = stub.PutState(AccountName, []byte(strconv.Itoa(Balance)))	
 	
 	AccountA1.Account_Name = AccountName
 	AccountA1.Account_Balance = Balance
