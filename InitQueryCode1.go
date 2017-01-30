@@ -24,11 +24,11 @@ import (
 type SimpleChaincode struct {
 }
 
-/*type Account struct{
-	Account_Name string
-	Account_Balance int
-	Account_BankNumber string
-}*/
+type Account struct{
+	AccName string
+	AccBalance int
+	AccBankName string
+}
 
 func main() {	
 	err := shim.Start(new(SimpleChaincode))
@@ -39,30 +39,30 @@ func main() {
 
 // Init resets all the things
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {   
-    //var AccountList[] Account
-	//var AccountA1 Account
+    var AccountList[] Account
+	var AccountA1 Account
     var err error
 	//var position int
 	var Balance int
-	var AccountName string	
+	var AccountName, BankName string	
 	if len(args) != 4{
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}  
 	AccountName = args[0]
     Balance, err = strconv.Atoi(args[1])
-	//BankNumber = args[2]
+	BankName = args[2]
 	err = stub.PutState(AccountName, []byte(strconv.Itoa(Balance)))	
 	
-	/*AccountA1.Account_Name = AccountName
-	AccountA1.Account_Balance = Balance
-	AccountA1.Account_BankNumber = BankNumber */   
+	AccountA1.AccName = AccountName
+	AccountA1.AccBalance = Balance
+	AccountA1.AccBankName = BankName    
 	if err != nil {
 		return nil, err
 	}
-    /*position = len(AccountList)
-    if(position != 20){
-       AccountList[position] = AccountA1       
-    }*/
+    //position = len(AccountList)
+    //if(position != 20){
+       AccountList[0] = AccountA1       
+    //}
 	return nil, nil
 }
 
