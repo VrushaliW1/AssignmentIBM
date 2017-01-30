@@ -72,22 +72,23 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	fmt.Println("query is running " + function)
     var AccountDeatils Account 
 	var err error
+	var AccName string
     if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting name of the person to query")
 	}
-    AccountDeatils.Account_Name = args[0]
-    Avalbytes, err := stub.GetState(AccountDeatils.Account_Name)
+    AccName = args[0]
+    Avalbytes, err := stub.GetState(AccName)
     if err != nil {
-		jsonResp := "{\"Error\":\"Failed to get state for " + AccountDeatils.Account_Name + "\"}"
+		jsonResp := "{\"Error\":\"Failed to get state for " + AccName + "\"}"
 		return nil, errors.New(jsonResp)
 	}
 
 	if Avalbytes == nil {
-		jsonResp := "{\"Error\":\"Nil amount for " + AccountDeatils.Account_Name + "\"}"
+		jsonResp := "{\"Error\":\"Nil amount for " + AccName + "\"}"
 		return nil, errors.New(jsonResp)
 	}
 
-	jsonResp := "{\"Name\":\"" + AccountDeatils.Account_Name + "\",\"Amount\":\"" + string(Avalbytes) + "\"}"
+	jsonResp := "{\"Name\":\"" + AccName + "\",\"Amount\":\"" + string(Avalbytes) + "\"}"
 	fmt.Printf("Query Response:%s\n", jsonResp)
 	
     return Avalbytes, nil
