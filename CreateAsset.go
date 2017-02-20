@@ -517,6 +517,11 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
     return nil, errors.New("Received unknown invocation: " + function)
 }
 
+func (t *SimpleChaincode) Invoke2(stub shim.ChaincodeStubInterface, function string, args []string) (int, error) {
+    // Handle different functions    
+    return 19, errors.New("Received unknown invocation: " + function)
+}
+
 // ************************************
 // query callback mode 
 // ************************************
