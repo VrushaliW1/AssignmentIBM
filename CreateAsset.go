@@ -591,7 +591,7 @@ func (t *SimpleChaincode) deleteAsset(stub shim.ChaincodeStubInterface, args []s
 
 //********************readAsset********************/
 
-func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, int) {
     var assetID string // asset ID
     var err error
     var state AssetState
@@ -613,7 +613,7 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
          err = errors.New("Unable to unmarshal state data obtained from ledger")
         return nil, err
     }
-    return 12, nil
+    return assetBytes, 12
 }
 
 //*************readAssetObjectModel*****************/
