@@ -46,20 +46,12 @@ type ContractState struct {
     Version      string                        `json:"version"`
 }
 
-type Geolocation struct {
-    Latitude    *float64 `json:"latitude,omitempty"`
-    Longitude   *float64 `json:"longitude,omitempty"`
-}
-
 type AssetState struct {
     AssetID        *string       `json:"assetID,omitempty"`        // all assets must have an ID, primary key of contract
-    Location       *Geolocation  `json:"location,omitempty"`       // current asset location
-    Temperature    *float64      `json:"temperature,omitempty"`    // asset temp
-    Carrier        *string       `json:"carrier,omitempty"`        // the name of the carrier
+    AssetName       *string      `json:"assetName,omitempty"`       // asset name    
 }
 
 var contractState = ContractState{MYVERSION}
-
 
 // ************************************
 // deploy callback mode 
@@ -300,7 +292,7 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
         err = errors.New("PUT ledger state failed: "+ fmt.Sprint(err))            
         return nil, err
     } 
-    return nil, nil
+    return assetBytes, nil
 }
 /*********************************  internal: mergePartialState ****************************/	
  func (t *SimpleChaincode) mergePartialState(oldState AssetState, newState AssetState) (AssetState,  error) {
