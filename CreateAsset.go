@@ -520,7 +520,24 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 // ************************************
 // query callback mode 
 // ************************************
-func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+// func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+//     // Handle different functions
+//     if function == "readAsset" {
+//         // gets the state for an assetID as a JSON struct
+//          return t.readAsset(stub, args)          
+//     } else if function =="readAssetObjectModel" {
+//         return t.readAssetObjectModel(stub, args)
+//     }  else if function == "readAssetSamples" {
+// 		// returns selected sample objects 
+// 		return t.readAssetSamples(stub, args)
+// 	} else if function == "readAssetSchemas" {
+// 		// returns selected sample objects 
+// 		return t.readAssetSchemas(stub, args)
+// 	}
+//     return nil, errors.New("Received unknown invocation: " + function)
+// }
+
+func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) (int, error) {
     // Handle different functions
     if function == "readAsset" {
         // gets the state for an assetID as a JSON struct
@@ -533,7 +550,9 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	} else if function == "readAssetSchemas" {
 		// returns selected sample objects 
 		return t.readAssetSchemas(stub, args)
-	}
+	} else if function =="TestMethod" {
+        return 12, errors.New("Received unknown invocation: " + function)
+    }
     return nil, errors.New("Received unknown invocation: " + function)
 }
 
