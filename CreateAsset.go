@@ -613,8 +613,9 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
          err = errors.New("Unable to unmarshal state data obtained from ledger")
         return nil, err
     }
-    jsonResp := "{\Asset" + string(assetBytes) + "\"}"
-    return nil, errors.New(jsonResp)
+    jsonResp := "{\"Name\":\"" + string(assetBytes) + "\"}"
+	fmt.Printf("Query Response:%s\n", jsonResp)
+     return assetBytes, nil
 }
 
 //*************readAssetObjectModel*****************/
