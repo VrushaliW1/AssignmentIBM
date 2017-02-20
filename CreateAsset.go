@@ -524,8 +524,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
     // Handle different functions
     if function == "readAsset" {
         // gets the state for an assetID as a JSON struct
-         t.readAsset(stub, args)
-         return nil,err
+         return t.readAsset(stub, args)          
     } else if function =="readAssetObjectModel" {
         return t.readAssetObjectModel(stub, args)
     }  else if function == "readAssetSamples" {
@@ -592,7 +591,7 @@ func (t *SimpleChaincode) deleteAsset(stub shim.ChaincodeStubInterface, args []s
 
 //********************readAsset********************/
 
-func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, int) {
+func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     var assetID string // asset ID
     var err error
     var state AssetState
@@ -600,24 +599,24 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
      // validate input data for number of args, Unmarshaling to asset state and obtain asset id
     stateIn, err:= t.validateInput(args)
     if err != nil {
-        //return nil, errors.New("Asset does not exist!")
-        return nil, 01
+        return nil, errors.New("Asset does not exist!")
+        //return nil, 01
     }
     assetID = *stateIn.AssetID
         // Get the state from the ledger
     assetBytes, err:= stub.GetState(assetID)
     if err != nil  || len(assetBytes) ==0{
         err = errors.New("Unable to get asset state from ledger")
-        //return nil, err
-        return nil, 02
+        return nil, err
+        //return nil, 02
     } 
     err = json.Unmarshal(assetBytes, &state)
     if err != nil {
          err = errors.New("Unable to unmarshal state data obtained from ledger")
-        //return nil, err
-        return nil, 03
+        return nil, err
+        //return nil, 03
     }
-    return assetBytes, 12
+    return assetBytes, errors.New("12")
 }
 
 //*************readAssetObjectModel*****************/
