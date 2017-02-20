@@ -614,7 +614,7 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
         return nil, err
     }
     jsonResp := "{\"Asset\":\"" + string(assetBytes) + "\"}"
-    return assetBytes, nil
+    return nil, errors.New(jsonResp)
 }
 
 //*************readAssetObjectModel*****************/
