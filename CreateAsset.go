@@ -27,7 +27,6 @@ import (
     "fmt"
     "strings"
      "reflect"
-     "strconv"
     "github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
@@ -514,9 +513,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
     } else if function == "deleteAsset" {
         // Deletes an asset by ID from the ledger
         return t.deleteAsset(stub, args)
-    } else if function == "createAccount" {
-        return t.createAccount(stub, args)
-    } 
+    }
     return nil, errors.New("Received unknown invocation: " + function)
 }
 
@@ -616,6 +613,7 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
          err = errors.New("Unable to unmarshal state data obtained from ledger")
         return nil, err
     }
+    jsonResp := "{\"Asset\":\"" + string(assetBytes) + "\"}"
     return assetBytes, nil
 }
 
@@ -747,28 +745,3 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
     }
     return oldState, nil
  }
-
- /*********************************  Create Account ****************************/
-
- func (t *SimpleChaincode) createAccount(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-    var BalanceA, BalanceB int
-    var AccountA, AccountB string
-    var err error
-	if len(args) != 4 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 1")
-	}
-    AccountA = args[0]
-    BalanceA, err = strconv.Atoi(args[1])
-     
-    AccountB = args[2]
-    BalanceB, err = strconv.Atoi(args[3])
-	//err1 := stub.PutState("hello_world", []byte(args[0]))
-
-	if err != nil {
-		return nil, err
-	}
-    fmt.Printf("BalanceA = %d, BalanceB = %d\n", BalanceA, BalanceB)
-    err = stub.PutState(AccountA, []byte(strconv.Itoa(BalanceA)))
-    err = stub.PutState(AccountB, []byte(strconv.Itoa(BalanceB)))
-	return nil, nil
-} 	
