@@ -3,9 +3,7 @@ package main
 import (
     "encoding/json"
     "errors"
-    "fmt"
-    "strings"
-    //"reflect"
+    "fmt"    
     "github.com/hyperledger/fabric/core/chaincode/shim"
 )
 type SimpleChaincode struct {
@@ -27,6 +25,20 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
     if err != nil {
         return nil, err
     }
-
     return nil, nil
+}
+
+func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+    fmt.Println("invoke is running " + function)
+
+    // Handle different functions
+    if function == "init" {
+        return t.Init(stub, "init", args)
+    } 
+    /*else if function == "write" {
+        return t.write(stub, args)
+    }*/
+    fmt.Println("invoke did not find func: " + function)
+
+    return nil, errors.New("Received unknown function invocation")
 }
