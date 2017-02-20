@@ -524,7 +524,8 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
     // Handle different functions
     if function == "readAsset" {
         // gets the state for an assetID as a JSON struct
-        return t.readAsset(stub, args)
+         t.readAsset(stub, args)
+         return nil,err
     } else if function =="readAssetObjectModel" {
         return t.readAssetObjectModel(stub, args)
     }  else if function == "readAssetSamples" {
