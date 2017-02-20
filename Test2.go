@@ -117,13 +117,7 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
         return t.readAsset(stub, args)
     } else if function =="readAssetObjectModel" {
         return t.readAssetObjectModel(stub, args)
-    }  else if function == "readAssetSamples" {
-		// returns selected sample objects 
-		return t.readAssetSamples(stub, args)
-	} else if function == "readAssetSchemas" {
-		// returns selected sample objects 
-		return t.readAssetSchemas(stub, args)
-	}
+    }  
     return nil, errors.New("Received unknown invocation: " + function)
 }
 
