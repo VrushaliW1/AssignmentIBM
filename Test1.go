@@ -34,9 +34,9 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
     if function == "init" {
         return t.Init(stub, "init", args)
     } 
-    /*else if function == "write" {
+    else if function == "write" {
         return t.write(stub, args)
-    }*/
+    }
     fmt.Println("invoke did not find func: " + function)
 
     return nil, errors.New("Received unknown function invocation")
@@ -46,9 +46,9 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
     fmt.Println("query is running " + function)
 
     // Handle different functions
-    /*if function == "read" {                            //read a variable
+    if function == "read" {                            //read a variable
         return t.read(stub, args)
-    }*/
+    }
     fmt.Println("query did not find func: " + function)
 
     return nil, errors.New("Received unknown function query")
