@@ -599,19 +599,22 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
      // validate input data for number of args, Unmarshaling to asset state and obtain asset id
     stateIn, err:= t.validateInput(args)
     if err != nil {
-        return nil, errors.New("Asset does not exist!")
+        //return nil, errors.New("Asset does not exist!")
+        return nil, 01
     }
     assetID = *stateIn.AssetID
         // Get the state from the ledger
     assetBytes, err:= stub.GetState(assetID)
     if err != nil  || len(assetBytes) ==0{
         err = errors.New("Unable to get asset state from ledger")
-        return nil, err
+        //return nil, err
+        return nil, 02
     } 
     err = json.Unmarshal(assetBytes, &state)
     if err != nil {
          err = errors.New("Unable to unmarshal state data obtained from ledger")
-        return nil, err
+        //return nil, err
+        return nil, 03
     }
     return assetBytes, 12
 }
