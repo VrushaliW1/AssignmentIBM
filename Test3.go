@@ -135,6 +135,11 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
 
     fmt.Println("assetID == " + string(assetID))    
 
+    err = stub.PutState("AsID", []byte("Tushar"))
+    if err != nil {
+        return nil,err        
+    }
+
     return nil, nil
 }
 
