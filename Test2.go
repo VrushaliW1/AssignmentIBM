@@ -55,35 +55,35 @@ var contractState = ContractState{MYVERSION}
 // ************************************
 // deploy callback mode 
 // ************************************
-func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) (AssetState, error) {
+func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, AssetState) {
     var stateArg ContractState
     var err error
     var state1 AssetState 
     if len(args) != 1 {
-        return state1, errors.New("init expects one argument, a JSON string with tagged version string")
+        return nil, state1//errors.New("init expects one argument, a JSON string with tagged version string")
     }
     err = json.Unmarshal([]byte(args[0]), &stateArg)
     if err != nil {
-        return state1, errors.New("Version argument unmarshal failed: " + fmt.Sprint(err))
+        return nil, state1 //errors.New("Version argument unmarshal failed: " + fmt.Sprint(err))
     }
     if stateArg.Version != MYVERSION {
-        return state1, errors.New("Contract version " + MYVERSION + " must match version argument: " + stateArg.Version)
+        return nil, state1//errors.New("Contract version " + MYVERSION + " must match version argument: " + stateArg.Version)
     }
     contractStateJSON, err := json.Marshal(stateArg)
     if err != nil {
-        return state1, errors.New("Marshal failed for contract state" + fmt.Sprint(err))
+        return nil, state1//errors.New("Marshal failed for contract state" + fmt.Sprint(err))
     }
     err = stub.PutState(CONTRACTSTATEKEY, contractStateJSON)
     if err != nil {
-        return state1, errors.New("Contract state failed PUT to ledger: " + fmt.Sprint(err))
+        return nil, state1//errors.New("Contract state failed PUT to ledger: " + fmt.Sprint(err))
     }    
-    return state1, nil
+    return nil, state1
 }
 
 // ************************************
 // deploy and invoke callback mode 
 // ************************************
-func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) (AssetState, error) {
+func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, AssetState) {
     // Handle different functions
     var asset1 AssetState 
     if function == "createAsset" {
@@ -92,7 +92,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
         
     asset1.AssetID = "1";
     asset1.AssetName = "2";
-    return asset1, nil
+    return nil,asset1
     } //else if function == "updateAsset" {
         // create assetID
         //return t.updateAsset(stub, args)
@@ -100,7 +100,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
         // Deletes an asset by ID from the ledger
        // return t.deleteAsset(stub, args)*/
     //}
-    return asset1, errors.New("Received unknown invocation: " + function)
+    return nil, asset1//errors.New("Received unknown invocation: " + function)
 }
 
 // ************************************
