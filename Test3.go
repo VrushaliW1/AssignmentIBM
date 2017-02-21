@@ -193,29 +193,32 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
 }
 
 func (t *SimpleChaincode) readTest(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-    // var assetID string // asset ID
-    // var err error
-    // var state AssetState
+     var assetID string // asset ID
+     var err error
+     var state AssetState
 
     //  // validate input data for number of args, Unmarshaling to asset state and obtain asset id
-    // stateIn, err:= t.validateInput(args)
-    // if err != nil {
-    //     return nil, errors.New("Asset does not exist!")
-    // }
-    // assetID = *stateIn.AssetID
-    //     // Get the state from the ledger
-    // assetBytes, err:= stub.GetState(assetID)
-    // if err != nil  || len(assetBytes) ==0{
-    //     err = errors.New("Unable to get asset state from ledger")
-    //     return nil, err
-    // } 
-    // err = json.Unmarshal(assetBytes, &state)
-    // if err != nil {
-    //      err = errors.New("Unable to unmarshal state data obtained from ledger")
-    //     return nil, err
-    // }
+     stateIn, err:= t.validateInput(args)
+     if err != nil {
+         return nil, errors.New("Asset does not exist!")
+     }
+     assetID = string(*stateIn.AssetID)
+     fmt.Println(assetID)
+         // Get the state from the ledger
+     assetBytes, err:= stub.GetState(assetID)
+     fmt.Println(assetBytes)
+     if err != nil  || len(assetBytes) ==0{
+         err = errors.New("Unable to get asset state from ledger")
+        return nil, err
+     } 
+     err = json.Unmarshal(assetBytes, &state)
+     if err != nil {
+          err = errors.New("Unable to unmarshal state data obtained from ledger")
+         return nil, err
+     }
     fmt.Println("In readTest")
-    return nil, nil
+     //var ID string = string(assetBytes);
+    return assetBytes, nil
 }
 
 
