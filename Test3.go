@@ -43,3 +43,18 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
     // }
     return nil, nil
 }
+
+func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+    // Handle different functions
+    // if function == "createAsset" {
+    //     // create assetID
+    //     return t.createAsset(stub, args)
+    // } else if function == "updateAsset" {
+    //     // create assetID
+    //     return t.updateAsset(stub, args)
+    // } else if function == "deleteAsset" {
+    //     // Deletes an asset by ID from the ledger
+    //     return t.deleteAsset(stub, args)
+    // }
+    return nil, nil
+}
