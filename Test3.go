@@ -117,41 +117,17 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
     if err != nil || len(assetBytes)==0{
         fmt.Println("create 1 ")
         // This implies that this is a 'create' scenario
-         stateStub = stateIn // The record that goes into the stub is the one that cme in
-         var ID string = string(*stateStub.AssetID);
-         fmt.Println(ID)
-         return []byte(ID),nil
-    } /*else {
-         // This is an update scenario
-        err = json.Unmarshal(assetBytes, &stateStub)
-        if err != nil {
-         fmt.Println("create 2 ")
-            err = errors.New("Unable to unmarshal JSON data from stub")
-            return nil, err
-            // state is an empty instance of asset state
-        }
-          // Merge partial state updates
-        stateStub, err =t.mergePartialState(stateStub,stateIn)
-        if err != nil {
-             fmt.Println("create 3 ")
-            err = errors.New("Unable to merge state")
-            return nil,err
-        }
-    }*/
+         stateStub = stateIn // The record that goes into the stub is the one that cme in         
+    } 
+
+    var ID string = string(*stateStub.AssetID);
+
     stateJSON, err := json.Marshal(stateStub)
-    /*if err != nil {
-         fmt.Println("create 4 ")
-        return nil, errors.New("Marshal failed for contract state" + fmt.Sprint(err))
-    }*/
-    // Get existing state from the stub
-      
-    // Write the new state to the ledger
+    
     err = stub.PutState(assetID, stateJSON)
-    /*if err != nil {
-         fmt.Println("create 5 ")
-        err = errors.New("PUT ledger state failed: "+ fmt.Sprint(err))            
-        return nil, err
-    } */
+
+    fmt.Println(assetID)
+
     return nil, nil
 }
 
