@@ -51,7 +51,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
     return nil, nil
 }
 
-func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) (string, error) {
+func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     // Handle different functions
     if function == "createAsset" {
         // create assetID
@@ -63,7 +63,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
     //     // Deletes an asset by ID from the ledger
     //     return t.deleteAsset(stub, args)
     }
-    return "008", nil
+    return nil, nil
 }
 
 
@@ -92,12 +92,12 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
     return nil, nil
 }
 
-func (t *SimpleChaincode) createAsset(stub shim.ChaincodeStubInterface, args []string) (string, error) {
+func (t *SimpleChaincode) createAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     _,erval:=t. createOrUpdateAsset(stub, args)
-    return "009", erval
+    return nil, erval
 }
 
-func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, args []string) (string, error) {
+func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     var assetID string                 // asset ID                    // used when looking in map
     var err error
     var stateIn AssetState
@@ -120,7 +120,7 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
          stateStub = stateIn // The record that goes into the stub is the one that cme in
          var ID string = string(*stateStub.AssetID);
          fmt.Println(ID)
-         return ID,nil
+         return []byte(ID),nil
     } /*else {
          // This is an update scenario
         err = json.Unmarshal(assetBytes, &stateStub)
@@ -152,7 +152,7 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
         err = errors.New("PUT ledger state failed: "+ fmt.Sprint(err))            
         return nil, err
     } */
-    return "010", nil
+    return nil, nil
 }
 
 func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err error) {
