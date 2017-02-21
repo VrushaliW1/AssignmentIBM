@@ -120,7 +120,7 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
          stateStub = stateIn // The record that goes into the stub is the one that cme in         
     } 
 
-    var ID string = string(*stateStub.AssetID);
+    //var ID string = string(*stateStub.AssetID);
 
     stateJSON, err := json.Marshal(stateStub)
     
