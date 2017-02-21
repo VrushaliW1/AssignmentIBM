@@ -75,6 +75,8 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	// 	return t.readAssetSchemas(stub, args)
 	// }
 
+    fmt.Println("In query")
+
    if function == "readAsset" {
         // gets the state for an assetID as a JSON struct
         return t.readTest(stub, args)
@@ -106,5 +108,6 @@ func (t *SimpleChaincode) readTest(stub shim.ChaincodeStubInterface, args []stri
     //      err = errors.New("Unable to unmarshal state data obtained from ledger")
     //     return nil, err
     // }
+    fmt.Println("In readTest")
     return nil, nil
 }
