@@ -107,26 +107,22 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
     // validate input data for number of args, Unmarshaling to asset state and obtain asset id
 
     stateIn, err = t.validateInput(args)
-    if err != nil {
-        return nil, err
-    }
+    
     assetID = *stateIn.AssetID
-    // Partial updates introduced here
-    // Check if asset record existed in stub
 
     fmt.Println("assetID = " + string(assetID))
 
-    assetBytes, err:= stub.GetState(assetID)
-
-    fmt.Println("assetBytes = " + string(assetBytes))
+    assetBytes, err:= stub.GetState(assetID)    
 
     if err != nil || len(assetBytes)==0{
+        fmt.Println("create 1 ")
         // This implies that this is a 'create' scenario
          stateStub = stateIn // The record that goes into the stub is the one that cme in
     } else {
-        // This is an update scenario
+         // This is an update scenario
         err = json.Unmarshal(assetBytes, &stateStub)
         if err != nil {
+         fmt.Println("create 2 ")
             err = errors.New("Unable to unmarshal JSON data from stub")
             return nil, err
             // state is an empty instance of asset state
@@ -134,20 +130,22 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
           // Merge partial state updates
         stateStub, err =t.mergePartialState(stateStub,stateIn)
         if err != nil {
+             fmt.Println("create 3 ")
             err = errors.New("Unable to merge state")
             return nil,err
         }
     }
     stateJSON, err := json.Marshal(stateStub)
     if err != nil {
+         fmt.Println("create 4 ")
         return nil, errors.New("Marshal failed for contract state" + fmt.Sprint(err))
     }
     // Get existing state from the stub
-    
-  
+      
     // Write the new state to the ledger
     err = stub.PutState(assetID, stateJSON)
     if err != nil {
+         fmt.Println("create 5 ")
         err = errors.New("PUT ledger state failed: "+ fmt.Sprint(err))            
         return nil, err
     } 
@@ -186,6 +184,7 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
         return state, err
     }
     
+    //fmt.Println("stateIn -- " + stateIn)
     
     stateIn.AssetID = &assetID
     return stateIn, nil
