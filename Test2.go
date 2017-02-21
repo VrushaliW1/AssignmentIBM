@@ -24,8 +24,7 @@ package main
 import (
     "encoding/json"
     "errors"
-    "fmt"
-    "strings"
+    "fmt"    
      "reflect"
     "github.com/hyperledger/fabric/core/chaincode/shim"
 )
@@ -47,8 +46,8 @@ type ContractState struct {
 }
 
 type AssetState struct {
-    AssetID        *string       `json:"assetID,omitempty"`        // all assets must have an ID, primary key of contract
-    AssetName       *string      `json:"assetName,omitempty"`       // asset name    
+    AssetID        string       `json:"assetID,omitempty"`        // all assets must have an ID, primary key of contract
+    AssetName      string      `json:"assetName,omitempty"`       // asset name    
 }
 
 var contractState = ContractState{MYVERSION}
@@ -76,26 +75,31 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
     err = stub.PutState(CONTRACTSTATEKEY, contractStateJSON)
     if err != nil {
         return nil, errors.New("Contract state failed PUT to ledger: " + fmt.Sprint(err))
-    }
+    }    
     return nil, nil
 }
 
 // ************************************
 // deploy and invoke callback mode 
 // ************************************
-func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) (AssetState, error) {
     // Handle different functions
+    var asset1 AssetState 
     if function == "createAsset" {
         // create assetID
-        return t.createAsset(stub, args)
-    } else if function == "updateAsset" {
+       // return t.createAsset(stub, args)
+        
+    asset1.AssetID = "1";
+    asset1.AssetName = "2";
+    return asset1, nil
+    } //else if function == "updateAsset" {
         // create assetID
-        return t.updateAsset(stub, args)
-    } else if function == "deleteAsset" {
+        //return t.updateAsset(stub, args)
+    //} /*else if function == "deleteAsset" {
         // Deletes an asset by ID from the ledger
-        return t.deleteAsset(stub, args)
-    }
-    return nil, errors.New("Received unknown invocation: " + function)
+       // return t.deleteAsset(stub, args)*/
+    //}
+    return asset1, errors.New("Received unknown invocation: " + function)
 }
 
 // ************************************
@@ -103,12 +107,12 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 // ************************************
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     // Handle different functions
-    if function == "readAsset" {
+    //if function == "readAsset" {
         // gets the state for an assetID as a JSON struct
-        return t.readAsset(stub, args)
-    } else if function =="readAssetObjectModel" {
-        return t.readAssetObjectModel(stub, args)
-    } 
+       // return t.readAsset(stub, args)
+  //  } //else if function =="readAssetObjectModel" {
+        //return t.readAssetObjectModel(stub, args)
+    //} 
     return nil, errors.New("Received unknown invocation: " + function)
 }
 
@@ -127,22 +131,23 @@ func main() {
 
 /******************** createAsset ********************/
 
-func (t *SimpleChaincode) createAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-    _,erval:=t. createOrUpdateAsset(stub, args)
+/*func (t *SimpleChaincode) createAsset(stub shim.ChaincodeStubInterface, args []string) (AssetState, error) {
+    /*_,erval:=t. createOrUpdateAsset(stub, args)
     return nil, erval
-}
+   
+}*/
 
 //******************** updateAsset ********************/
 
-func (t *SimpleChaincode) updateAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+/*func (t *SimpleChaincode) updateAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
      _,erval:=t. createOrUpdateAsset(stub, args)
     return nil, erval
-}
+}*/
 
 
 //******************** deleteAsset ********************/
 
-func (t *SimpleChaincode) deleteAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+/*func (t *SimpleChaincode) deleteAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     var assetID string // asset ID
     var err error
     var stateIn AssetState
@@ -152,7 +157,7 @@ func (t *SimpleChaincode) deleteAsset(stub shim.ChaincodeStubInterface, args []s
     if err != nil {
         return nil, err
     }
-    assetID = *stateIn.AssetID
+    //assetID = *stateIn.AssetID
     // Delete the key / asset from the ledger
     err = stub.DelState(assetID)
     if err != nil {
@@ -160,13 +165,13 @@ func (t *SimpleChaincode) deleteAsset(stub shim.ChaincodeStubInterface, args []s
        return nil, err
     }
     return nil, nil
-}
+}*/
 
 /******************* Query Methods ***************/
 
 //********************readAsset********************/
 
-func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+/*func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     var assetID string // asset ID
     var err error
     var state AssetState
@@ -189,7 +194,7 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
         return nil, err
     }
     return assetBytes, nil
-}
+}*/
 
 //*************readAssetObjectModel*****************/
 
@@ -206,7 +211,7 @@ func (t *SimpleChaincode) readAssetObjectModel(stub shim.ChaincodeStubInterface,
 // ************************************
 // validate input data : common method called by the CRUD functions
 // ************************************
-func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err error) {
+/*func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err error) {
     var assetID string // asset ID
     var state AssetState = AssetState{} // The calling function is expecting an object of type AssetState
 
@@ -241,10 +246,10 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
     
     stateIn.AssetID = &assetID
     return stateIn, nil
-}
+}*/
 //******************** createOrUpdateAsset ********************/
 
-func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+/*func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     var assetID string                 // asset ID                    // used when looking in map
     var err error
     var stateIn AssetState
@@ -253,11 +258,11 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
 
     // validate input data for number of args, Unmarshaling to asset state and obtain asset id
 
-    stateIn, err = t.validateInput(args)
-    if err != nil {
-        return nil, err
-    }
-    assetID = *stateIn.AssetID
+   stateIn, err = t.validateInput(args)
+   if err != nil {
+      return nil, err
+   }
+    assetID = stateIn.AssetID
     // Partial updates introduced here
     // Check if asset record existed in stub
     assetBytes, err:= stub.GetState(assetID)
@@ -293,7 +298,7 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
         return nil, err
     } 
     return assetBytes, nil
-}
+}*/
 /*********************************  internal: mergePartialState ****************************/	
  func (t *SimpleChaincode) mergePartialState(oldState AssetState, newState AssetState) (AssetState,  error) {
      
