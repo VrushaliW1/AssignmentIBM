@@ -48,6 +48,9 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
     // if err != nil {
     //     return nil, errors.New("Contract state failed PUT to ledger: " + fmt.Sprint(err))
     // }
+
+    err := stub.PutState("AsID", []byte(args[0]))
+
     return nil, nil
 }
 
