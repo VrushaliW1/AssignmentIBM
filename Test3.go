@@ -27,7 +27,7 @@ func main() {
     }
 }
 
-func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) (string, error) {
+func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     // var stateArg ContractState
     // var err error
     // if len(args) != 1 {
@@ -48,7 +48,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
     // if err != nil {
     //     return nil, errors.New("Contract state failed PUT to ledger: " + fmt.Sprint(err))
     // }
-    return "007", nil
+    return nil, nil
 }
 
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) (string, error) {
