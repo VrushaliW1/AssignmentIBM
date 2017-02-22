@@ -73,8 +73,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     // Handle different functions
     if function == "createAsset" {
-        // create assetID
-        fmt.Println("In create asset")
+        // create assetID        
         return t.createAsset(stub, args)
     } /*else if function == "updateAsset" {
         // create assetID
@@ -122,7 +121,6 @@ func main() {
 /******************** createAsset ********************/
 
 func (t *SimpleChaincode) createAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-    fmt.Println("In create asset")
     _,erval:=t. createOrUpdateAsset(stub, args)
     return nil, erval
 }
@@ -141,7 +139,8 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
     if err != nil {
         return nil, errors.New("Asset does not exist!")
     }
-    fmt.Println(stateIn)
+    fmt.Println(stateIn.AssetID)
+    fmt.Println(stateIn.AssetName)
     assetID = stateIn.AssetID
         // Get the state from the ledger
     fmt.Println("assetID == " + assetID)
@@ -165,7 +164,7 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
 // validate input data : common method called by the CRUD functions
 // ************************************
 func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err error) {
-    var assetID string // asset ID
+    /*var assetID string // asset ID
     var state AssetState = AssetState{} // The calling function is expecting an object of type AssetState
 
     if len(args) !=1 {
@@ -195,7 +194,8 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
         err = errors.New("Asset id is mandatory in the input JSON data")
         return state, err
     }*/
-    stateIn.AssetID = assetID
+    stateIn.AssetID = args[0]
+    stateIn.AssetName = args[1]
     return stateIn, nil
 }
 //******************** createOrUpdateAsset ********************/
