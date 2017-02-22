@@ -693,11 +693,12 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
     if err != nil {
         return nil, err
     }
-    assetID = *stateIn.AssetID
+    assetID = "ddce1694-d1b6-4fc9-934b-150cd0e05ea6"
     fmt.Println(assetID)
     // Partial updates introduced here
     // Check if asset record existed in stub
     assetBytes, err:= stub.GetState(assetID)
+    fmt.Println(assetBytes)
     if err != nil || len(assetBytes)==0{
         // This implies that this is a 'create' scenario
          stateStub = stateIn // The record that goes into the stub is the one that cme in
