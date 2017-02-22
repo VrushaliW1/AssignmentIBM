@@ -200,6 +200,7 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
     stateJSON := []byte(jsonData)
     fmt.Println("stateJSON == " + string(stateJSON))
     err = json.Unmarshal(stateJSON, &stateIn)
+    fmt.Println("err == " + string(err))
     stateIn.AssetID = args[0]
     stateIn.AssetName = args[1]
     return stateIn, nil
