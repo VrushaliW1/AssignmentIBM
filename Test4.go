@@ -227,7 +227,7 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
     //assetID = stateIn.AssetName
     // Partial updates introduced here
     // Check if asset record existed in stub
-    fmt.Println("AssetID = " + stateIn.assetID)
+    fmt.Println("AssetID = " + stateIn.AssetID)
     assetBytes, err:= stub.GetState(assetIDAddr)
     fmt.Println("assetBytes = " + string(assetBytes))
     if err != nil || len(assetBytes)==0{
