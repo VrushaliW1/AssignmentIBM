@@ -218,6 +218,7 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
     // validate input data for number of args, Unmarshaling to asset state and obtain asset id
     fmt.Println("In create asset")
     stateIn, err = t.validateInput(args)
+    fmt.Println(stateIn)
     if err != nil {
         return nil, err
     }
