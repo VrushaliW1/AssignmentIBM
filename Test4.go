@@ -223,18 +223,19 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
     if err != nil {
         return nil, err
     }
-    assetID = stateIn.AssetID
+    assetIDAddr = *stateIn.AssetID
+    //assetID = stateIn.AssetName
     // Partial updates introduced here
     // Check if asset record existed in stub
     fmt.Println("AssetID = " + assetID)
-    assetBytes, err:= stub.GetState(assetID)
+    assetBytes, err:= stub.GetState(assetIDAddr)
     fmt.Println("assetBytes = " + string(assetBytes))
     if err != nil || len(assetBytes)==0{
         // This implies that this is a 'create' scenario
          stateStub = stateIn // The record that goes into the stub is the one that cme in
     } 
     stateJSON, err := json.Marshal(stateStub)
-    err = stub.PutState(assetID, stateJSON)     
+    err = stub.PutState(assetIDAddr, stateJSON)     
     return nil, nil
 }
 /*********************************  internal: mergePartialState ****************************/	
