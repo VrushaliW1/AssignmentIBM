@@ -45,8 +45,7 @@ type AssetState struct {
 // ************************************
 // deploy callback mode 
 // ************************************
-func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-    var err error
+func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {   
     /*if len(args) != 1 {
         return nil, errors.New("init expects one argument, a JSON string with tagged version string")
     }
