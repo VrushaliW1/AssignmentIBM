@@ -25,8 +25,7 @@ import (
     "encoding/json"
     "errors"
     "fmt"
-    "strings"
-     "reflect"
+      "reflect"
     "github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
