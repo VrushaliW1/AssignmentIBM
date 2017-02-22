@@ -25,7 +25,8 @@ import (
     "encoding/json"
     "errors"
     "fmt"
-      "reflect"
+    "strings"
+    "reflect"
     "github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
@@ -195,15 +196,15 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
         return state, err
     }*/
     jsonData:=args[0]
-    //assetID = ""
-    fmt.Println("args == " + string(args[0]))
-    stateJSON := []byte(jsonData)
-    fmt.Println("stateJSON == " + string(stateJSON))
-    err = json.Unmarshal(stateJSON, &stateIn)
-    fmt.Println(err)
-    stateIn.AssetID = args[0]
-    stateIn.AssetName = args[1]
-    return stateIn, nil
+    
+    var pro AssetState	
+    err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&pro)
+    if err != nil {
+	fmt.Println(err)
+	return
+    }
+    fmt.Println(pro.AssetID)
+    return pro, nil
 }
 //******************** createOrUpdateAsset ********************/
 
