@@ -74,6 +74,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
     // Handle different functions
     if function == "createAsset" {
         // create assetID
+        fmt.Println("In create asset")
         return t.createAsset(stub, args)
     } /*else if function == "updateAsset" {
         // create assetID
@@ -121,6 +122,7 @@ func main() {
 /******************** createAsset ********************/
 
 func (t *SimpleChaincode) createAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+    fmt.Println("In create asset")
     _,erval:=t. createOrUpdateAsset(stub, args)
     return nil, erval
 }
