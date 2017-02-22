@@ -194,6 +194,8 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
         err = errors.New("Asset id is mandatory in the input JSON data")
         return state, err
     }*/
+    fmt.Println("assetID == " + string(args[0]))
+     fmt.Println("assetName == " + string(args[1]))
     stateIn.AssetID = args[0]
     stateIn.AssetName = args[1]
     return stateIn, nil
