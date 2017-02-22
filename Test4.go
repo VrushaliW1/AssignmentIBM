@@ -210,7 +210,7 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
 //******************** createOrUpdateAsset ********************/
 
 func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-    var assetID string                 // asset ID                    // used when looking in map
+    var assetIDAddr string                 // asset ID                    // used when looking in map
     var err error
     var stateIn AssetState
     var stateStub AssetState  
