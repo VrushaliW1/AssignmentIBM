@@ -188,17 +188,6 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
     // The nil check is required because the asset id is a pointer. 
     // If no value comes in from the json input string, the values are set to nil
     
-    if stateIn.AssetID !=nil { 
-        assetID = strings.TrimSpace(stateIn.AssetID)
-        if assetID==""{
-            err = errors.New("AssetID not passed")
-            return state, err
-        }
-    } else {
-        err = errors.New("Asset id is mandatory in the input JSON data")
-        return state, err
-    }   
-    
     stateIn.AssetID = assetID
     return stateIn, nil
 }
