@@ -199,7 +199,7 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
         return state, err
     }   
     
-    stateIn.AssetID = &assetID
+    stateIn.AssetID = assetID
     return stateIn, nil
 }
 //******************** createOrUpdateAsset ********************/
