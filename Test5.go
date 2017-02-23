@@ -167,20 +167,9 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
 // validate input data : common method called by the CRUD functions
 // ************************************
 func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err error) {
-    //var assetID string // asset ID
-    //var state AssetState = AssetState{} // The calling function is expecting an object of type AssetState
-
-    
-    
-    
-    //stateJSON := []byte(jsonData)
-    //err = json.Unmarshal(stateJSON, &stateIn)
-    
-    // was assetID present?
-    // The nil check is required because the asset id is a pointer. 
-    // If no value comes in from the json input string, the values are set to nil
-    
-    
+       
+    jsonData:=args[0]
+    err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&stateIn)
     return stateIn, nil
 }
 //******************** createOrUpdateAsset ********************/
@@ -190,15 +179,16 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
     var err error
     var stateIn AssetState
     var stateStub AssetState  
-    
-    jsonData:=args[0]
+
     // validate input data for number of args, Unmarshaling to asset state and obtain asset id
     fmt.Println("In create update asset")
-    //stateIn, err = t.validateInput(args)
-    err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&stateIn)
-     
-    fmt.Println(stateIn)    
-    assetID = stateIn.AssetID    
+    stateIn, err = t.validateInput(args)
+    
+    fmt.Println(stateIn)
+    if err != nil {
+        return nil, err
+    }
+    assetID = stateIn.AssetID
     fmt.Println("AssetID = " + stateIn.AssetID)
     assetBytes, err:= stub.GetState(assetID)
     fmt.Println("assetBytes = " + string(assetBytes))
