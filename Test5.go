@@ -171,12 +171,11 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
     //var state AssetState = AssetState{} // The calling function is expecting an object of type AssetState
 
     
-    jsonData:=args[0]
+    
     
     //stateJSON := []byte(jsonData)
     //err = json.Unmarshal(stateJSON, &stateIn)
-    err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&stateIn)
-     
+    
     // was assetID present?
     // The nil check is required because the asset id is a pointer. 
     // If no value comes in from the json input string, the values are set to nil
@@ -191,19 +190,15 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
     var err error
     var stateIn AssetState
     var stateStub AssetState  
-
+    
+    jsonData:=args[0]
     // validate input data for number of args, Unmarshaling to asset state and obtain asset id
     fmt.Println("In create update asset")
-    stateIn, err = t.validateInput(args)
-    
-    fmt.Println(stateIn)
-    if err != nil {
-        return nil, err
-    }
-    assetID = stateIn.AssetID
-    //assetID = stateIn.AssetName
-    // Partial updates introduced here
-    // Check if asset record existed in stub
+    //stateIn, err = t.validateInput(args)
+    err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&stateIn)
+     
+    fmt.Println(stateIn)    
+    assetID = stateIn.AssetID    
     fmt.Println("AssetID = " + stateIn.AssetID)
     assetBytes, err:= stub.GetState(assetID)
     fmt.Println("assetBytes = " + string(assetBytes))
