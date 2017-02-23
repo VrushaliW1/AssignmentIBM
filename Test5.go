@@ -167,7 +167,7 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
 // validate input data : common method called by the CRUD functions
 // ************************************
 func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err error) {
-    /*var assetID string // asset ID
+    var assetID string // asset ID
     var state AssetState = AssetState{} // The calling function is expecting an object of type AssetState
 
     if len(args) !=1 {
@@ -177,7 +177,8 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
     jsonData:=args[0]
     assetID = ""
     stateJSON := []byte(jsonData)
-    err = json.Unmarshal(stateJSON, &stateIn)
+    //err = json.Unmarshal(stateJSON, &stateIn)
+    err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&state)
     if err != nil {
         err = errors.New("Unable to unmarshal input JSON data")
         return state, err
@@ -196,8 +197,8 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
     } else {
         err = errors.New("Asset id is mandatory in the input JSON data")
         return state, err
-    }*/
-    jsonData:=args[0]
+    }
+    /*jsonData:=args[0]
     
     var pro AssetState	
     err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&pro)
@@ -206,7 +207,7 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
 	return
     }
     fmt.Println(pro.AssetID)
-    return pro, nil
+    return pro, nil*/
 }
 //******************** createOrUpdateAsset ********************/
 
