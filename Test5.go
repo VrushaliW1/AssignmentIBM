@@ -176,7 +176,7 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
     }
     jsonData:=args[0]
     assetID = ""
-    stateJSON := []byte(jsonData)
+    //stateJSON := []byte(jsonData)
     //err = json.Unmarshal(stateJSON, &stateIn)
     err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&stateIn)
     if err != nil {
