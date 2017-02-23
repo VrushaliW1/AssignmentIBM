@@ -167,8 +167,8 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
 // validate input data : common method called by the CRUD functions
 // ************************************
 func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err error) {
-    var assetID string // asset ID
-    var state AssetState = AssetState{} // The calling function is expecting an object of type AssetState
+    //var assetID string // asset ID
+    //var state AssetState = AssetState{} // The calling function is expecting an object of type AssetState
 
     
     jsonData:=args[0]
