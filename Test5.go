@@ -178,7 +178,7 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
     assetID = ""
     stateJSON := []byte(jsonData)
     //err = json.Unmarshal(stateJSON, &stateIn)
-    err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&state)
+    err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&stateIn)
     if err != nil {
         err = errors.New("Unable to unmarshal input JSON data")
         return state, err
@@ -188,7 +188,7 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
     // The nil check is required because the asset id is a pointer. 
     // If no value comes in from the json input string, the values are set to nil
     
-    /*if stateIn.AssetID !=nil { 
+    if stateIn.AssetID !=nil { 
         assetID = strings.TrimSpace(*stateIn.AssetID)
         if assetID==""{
             err = errors.New("AssetID not passed")
@@ -197,17 +197,10 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
     } else {
         err = errors.New("Asset id is mandatory in the input JSON data")
         return state, err
-    }
-    /*jsonData:=args[0]
+    }   
     
-    var pro AssetState	
-    err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&pro)
-    if err != nil {
-	fmt.Println(err)
-	return
-    }
-    fmt.Println(pro.AssetID)
-    return pro, nil*/
+    stateIn.AssetID = &assetID
+    return stateIn, nil
 }
 //******************** createOrUpdateAsset ********************/
 
