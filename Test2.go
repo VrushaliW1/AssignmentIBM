@@ -250,7 +250,7 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
 	return
     }
     //fmt.Println(pro.AssetID)
-    var i string
+    var i int
     i = strconv.Atoi(pro.AssetID) // temporary start with AssetID = 1
     listAsset[i].AssetID = pro.AssetID
     listAsset[i].AssetName = pro.AssetName
