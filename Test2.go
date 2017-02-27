@@ -64,23 +64,15 @@ var listAsset [20]AssetState
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     var stateArg ContractState
     var err error
-    var obj [5]AssetState
-    
-    
+    /*var obj [5]AssetState
     fmt.Println(obj[0])
-
-    /*for i := 0; i < 10; i++ {
+    for i := 0; i < 10; i++ {
 		arrAssetState[0].AssetID = "i"
-		arrAssetState[0].AssetName = "TUshar"
-		
-	//}
-	
-	//for j := 0; j < 10; j++ {
-		
-		fmt.Println(arrAssetState[0])
-		
-	//}*/
-
+		arrAssetState[0].AssetName = "TUshar"	
+	}	
+	for j := 0; j < 10; j++ {
+	fmt.Println(arrAssetState[0])		
+	}*/
     fmt.Println("in init")    
     listAsset[0].AssetID = "1"    
     listAsset[0].AssetName = "a" 
@@ -245,36 +237,20 @@ func (t *SimpleChaincode) readAssetObjectModel(stub shim.ChaincodeStubInterface,
 // ************************************
 func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err error) {
     var assetID string // asset ID
-    var state AssetState = AssetState{} // The calling function is expecting an object of type AssetState
-
+    var state AssetState = AssetState{} // The calling function is expecting an object of type AssetState    	
     if len(args) !=1 {
         err = errors.New("Incorrect number of arguments. Expecting a JSON strings with mandatory assetID")
         return state, err
-    }
+    }    
     jsonData:=args[0]
     assetID = ""
-    stateJSON := []byte(jsonData)
+    stateJSON := []byte(jsonData)    
     err = json.Unmarshal(stateJSON, &stateIn)
     if err != nil {
         err = errors.New("Unable to unmarshal input JSON data")
-        return state, err
-        // state is an empty instance of asset state
+        return state, err        
     }      
-    // was assetID present?
-    // The nil check is required because the asset id is a pointer. 
-    // If no value comes in from the json input string, the values are set to nil
-        assetID = strings.TrimSpace(stateIn.AssetID)
-    /*if stateIn.AssetID !=nil { 
-        assetID = strings.TrimSpace(stateIn.AssetID)
-        if assetID==""{
-            err = errors.New("AssetID not passed")
-            return state, err
-        }
-    } else {
-        err = errors.New("Asset id is mandatory in the input JSON data")
-        return state, err
-    }*/
-       
+    assetID = strings.TrimSpace(stateIn.AssetID)       
     stateIn.AssetID = assetID
     return stateIn, nil
 }
@@ -298,36 +274,19 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
 	
     // Check if asset record existed in stub
     assetBytes, err:= stub.GetState(assetID)
+    var length int
+    length = listAsset.len
+    fmt.Println(length)
 	//stateStub = stateIn
 	fmt.Println("assetbyte= ", assetBytes)
     if err != nil || len(assetBytes)==0{
         // This implies that this is a 'create' scenario
          stateStub = stateIn // The record that goes into the stub is the one that cme in
-    } else {
-        // This is an update scenario
-        err = json.Unmarshal(assetBytes, &stateStub)
-        if err != nil {
-            err = errors.New("Unable to unmarshal JSON data from stub")
-            return nil, err
-            // state is an empty instance of asset state
-        }
-          // Merge partial state updates
-        stateStub, err =t.mergePartialState(stateStub,stateIn)
-        if err != nil {
-            err = errors.New("Unable to merge state")
-            return nil,err
-        }
-    }
+    } 
     stateJSON, err := json.Marshal(stateStub)
 	
-    if err != nil {
-        return nil, errors.New("Marshal failed for contract state" + fmt.Sprint(err))
-    }
-    // Get existing state from the stub
-    
-    // Write the new state to the ledger
     err = stub.PutState(assetID, stateJSON)
- if err != nil {
+    if err != nil {
         err = errors.New("PUT ledger state failed: "+ fmt.Sprint(err))  
  	
         return nil, err
