@@ -255,8 +255,8 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
     i = pro.AssetID // temporary start with AssetID = 1
     var index int
     index = strconv.Atoi(i)
-    listAsset[i].AssetID = pro.AssetID
-    listAsset[i].AssetName = pro.AssetName
+    listAsset[index].AssetID = pro.AssetID
+    listAsset[index].AssetName = pro.AssetName
     return pro, nil
     /*assetID = ""
     stateJSON := []byte(jsonData)    
