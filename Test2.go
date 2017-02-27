@@ -114,7 +114,8 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 // ************************************
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     // Handle different functions
-	fmt.Println("c1")
+	fmt.Println("in invoke")
+    fmt.Println(listAsset)
         return t.createAsset(stub, args)
     if function == "createAsset" {
         // create assetID
