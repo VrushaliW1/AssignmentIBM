@@ -64,6 +64,8 @@ var listAsset []AssetState
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     var stateArg ContractState
     var err error
+    listAsset[0].AssetID = "123"
+    listAsset[0].AssetName = "abc" 
     fmt.Println(listAsset)
     if len(args) != 1 {
         return nil, errors.New("init expects one argument, a JSON string with tagged version string")
