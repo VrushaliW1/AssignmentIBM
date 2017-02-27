@@ -82,10 +82,10 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	//}*/
 
     fmt.Println("in init")    
-    obj[0].AssetID = "1"    
-    obj[0].AssetName = "a" 
-    fmt.Println(obj[0])
-    listAsset[0] = obj 
+    listAsset[0].AssetID = "1"    
+    listAsset[0].AssetName = "a" 
+    fmt.Println(listAsset[0])
+    //listAsset[0] = obj 
     fmt.Println(listAsset)
     fmt.Println("after list")
     if len(args) != 1 {
