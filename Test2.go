@@ -64,7 +64,7 @@ var listAsset []AssetState
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     var stateArg ContractState
     var err error
-    //var obj [5]AssetState
+    var obj [5]AssetState
     var arrAssetState [10]AssetState
     
     fmt.Println(obj[0])
@@ -85,7 +85,7 @@ for i := 0; i < 10; i++ {
     obj[0].AssetID = "1"    
     obj[0].AssetName = "a" 
     fmt.Println(obj[0])
-    listAsset[0] = obj 
+    //listAsset[0] = obj 
     fmt.Println(listAsset)
     fmt.Println("after list")
     if len(args) != 1 {
