@@ -57,7 +57,7 @@ type AssetState struct {
     }
 
 var contractState = ContractState{MYVERSION}
-var listAsset []AssetState
+var listAsset [20]AssetState
 // ************************************
 // deploy callback mode 
 // ************************************
@@ -65,27 +65,27 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
     var stateArg ContractState
     var err error
     var obj [5]AssetState
-    var arrAssetState [10]AssetState
+    
     
     fmt.Println(obj[0])
 
-for i := 0; i < 10; i++ {
-		arrAssetState[i].AssetID = "i"
-		arrAssetState[i].AssetName = "TUshar"
+    /*for i := 0; i < 10; i++ {
+		arrAssetState[0].AssetID = "i"
+		arrAssetState[0].AssetName = "TUshar"
 		
-	}
+	//}
 	
-	for j := 0; j < 10; j++ {
+	//for j := 0; j < 10; j++ {
 		
-		fmt.Println(arrAssetState[j])
+		fmt.Println(arrAssetState[0])
 		
-	}
+	//}*/
 
     fmt.Println("in init")    
     obj[0].AssetID = "1"    
     obj[0].AssetName = "a" 
     fmt.Println(obj[0])
-    //listAsset[0] = obj 
+    listAsset[0] = obj 
     fmt.Println(listAsset)
     fmt.Println("after list")
     if len(args) != 1 {
