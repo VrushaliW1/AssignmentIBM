@@ -274,7 +274,7 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
 	
     // Check if asset record existed in stub
     assetBytes, err:= stub.GetState(assetID)
-    var length int
+    //var length int
     //length = len(listAsset)
     //fmt.Println(length)
 	//stateStub = stateIn
