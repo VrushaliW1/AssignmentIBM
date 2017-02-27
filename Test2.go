@@ -65,10 +65,9 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
     var stateArg ContractState
     var err error
     var obj AssetState
-
-    fmt.Println("in init")    
-    obj.AssetID = "1"
     fmt.Println(obj)
+    fmt.Println("in init")    
+    obj.AssetID = "1"    
     obj.AssetName = "a" 
     listAsset[0] = obj 
     fmt.Println(listAsset)
