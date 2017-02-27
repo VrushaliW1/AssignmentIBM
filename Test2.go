@@ -279,7 +279,8 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
     //fmt.Println(length)
 	//stateStub = stateIn
     //listAsset[len(listAsset)-1:][0]
-    fmt.Println(listAsset[len(listAsset)-1:])
+    
+    fmt.Println("len of array" + listAsset[len(listAsset)-1])
 	fmt.Println("assetbyte= ", assetBytes)
     if err != nil || len(assetBytes)==0{
         // This implies that this is a 'create' scenario
