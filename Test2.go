@@ -70,8 +70,8 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
     fmt.Println(obj[0])
 
 for i := 0; i < 10; i++ {
-		arrAssetState[i].AssetID = i
-		arrAssetState[i].AssetName = i + 10
+		arrAssetState[i].AssetID = "i"
+		arrAssetState[i].AssetName = "TUshar"
 		
 	}
 	
