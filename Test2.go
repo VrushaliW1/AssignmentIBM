@@ -243,7 +243,19 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
         return state, err
     }    
     jsonData:=args[0]
-    assetID = ""
+    var pro AssetState	
+    err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&pro)
+    if err != nil {
+	fmt.Println(err)
+	return
+    }
+    //fmt.Println(pro.AssetID)
+    var i int
+    i = pro.AssetID // temporary start with AssetID = 1
+    listAsset[i].AssetID = pro.AssetID
+    listAsset[i].AssetName = pro.AssetName
+    return pro, nil
+    /*assetID = ""
     stateJSON := []byte(jsonData)    
     err = json.Unmarshal(stateJSON, &stateIn)
     if err != nil {
@@ -252,7 +264,7 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
     }      
     assetID = strings.TrimSpace(stateIn.AssetID)       
     stateIn.AssetID = assetID
-    return stateIn, nil
+    return stateIn, nil*/
 }
 
 
@@ -279,9 +291,8 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
     //fmt.Println(length)
 	//stateStub = stateIn
     //listAsset[len(listAsset)-1:][0]
-    
-    fmt.Println("len of array" , listAsset[len(listAsset)-1])
-	fmt.Println("assetbyte= ", assetBytes)
+    //fmt.Println("len of array" , listAsset[len(listAsset)-1])
+	//fmt.Println("assetbyte= ", assetBytes)
     if err != nil || len(assetBytes)==0{
         // This implies that this is a 'create' scenario
          stateStub = stateIn // The record that goes into the stub is the one that cme in
