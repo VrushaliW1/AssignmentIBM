@@ -52,8 +52,8 @@ type Geolocation struct {
 }
 
 type AssetState struct {
-    AssetID        *string       `json:"assetID,omitempty"`        // all assets must have an ID, primary key of contract
-    AssetName      *string       `json:"assetName,omitempty"`       // current asset location
+    AssetID        string       `json:"assetID,omitempty"`        // all assets must have an ID, primary key of contract
+    AssetName      string       `json:"assetName,omitempty"`       // current asset location
     }
 
 var contractState = ContractState{MYVERSION}
@@ -65,12 +65,10 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
     var stateArg ContractState
     var err error
     fmt.Println("in init")
-    var id string
-    id = "1" 
-    var name string 
-    name = "abc" 
-    listAsset[0].AssetID = &id
-    listAsset[0].AssetName = &name 
+    var obj AssetState
+    obj.AssetID = "1"
+    obj.AssetName = "a" 
+    listAsset[0] = obj 
     fmt.Println(listAsset)
     fmt.Println("after list")
     if len(args) != 1 {
@@ -172,7 +170,7 @@ func (t *SimpleChaincode) deleteAsset(stub shim.ChaincodeStubInterface, args []s
     if err != nil {
         return nil, err
     }
-    assetID = *stateIn.AssetID
+    assetID = stateIn.AssetID
     // Delete the key / asset from the ledger
     err = stub.DelState(assetID)
     if err != nil {
@@ -196,7 +194,7 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
     if err != nil {
         return nil, errors.New("Asset does not exist!")
     }
-    assetID = *stateIn.AssetID
+    assetID = stateIn.AssetID
         // Get the state from the ledger
     assetBytes, err:= stub.GetState(assetID)
     if err != nil  || len(assetBytes) ==0{
@@ -247,9 +245,9 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
     // was assetID present?
     // The nil check is required because the asset id is a pointer. 
     // If no value comes in from the json input string, the values are set to nil
-    
-    if stateIn.AssetID !=nil { 
-        assetID = strings.TrimSpace(*stateIn.AssetID)
+        assetID = strings.TrimSpace(stateIn.AssetID)
+    /*if stateIn.AssetID !=nil { 
+        assetID = strings.TrimSpace(stateIn.AssetID)
         if assetID==""{
             err = errors.New("AssetID not passed")
             return state, err
@@ -257,7 +255,7 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
     } else {
         err = errors.New("Asset id is mandatory in the input JSON data")
         return state, err
-    }
+    }*/
     
     
     stateIn.AssetID = &assetID
@@ -276,7 +274,7 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
     // validate input data for number of args, Unmarshaling to asset state and obtain asset id
 	
     stateIn, err = t.validateInput(args)
-	assetID = *stateIn.AssetID
+	assetID = stateIn.AssetID
     if err != nil {
         return nil, err
     }
