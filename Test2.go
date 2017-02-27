@@ -57,13 +57,14 @@ type AssetState struct {
     }
 
 var contractState = ContractState{MYVERSION}
-
+var listAsset []AssetState
 // ************************************
 // deploy callback mode 
 // ************************************
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     var stateArg ContractState
     var err error
+    fmt.Println(listAsset)
     if len(args) != 1 {
         return nil, errors.New("init expects one argument, a JSON string with tagged version string")
     }
@@ -262,7 +263,7 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
     var assetID string                 // asset ID                    // used when looking in map
     var err error
     var stateIn AssetState
-    var stateStub AssetState
+    var stateStub AssetState   
   
     // validate input data for number of args, Unmarshaling to asset state and obtain asset id
 	
