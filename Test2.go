@@ -201,7 +201,7 @@ func (t *SimpleChaincode) deleteAsset(stub shim.ChaincodeStubInterface, args []s
 func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     var assetID string // asset ID
     var err error
-    //var state AssetState
+    var b bytes.Buffer
     fmt.Println("in readAsset")
      // validate input data for number of args, Unmarshaling to asset state and obtain asset id
     stateIn, err:= t.validateInput(args)
@@ -213,7 +213,8 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
     fmt.Println("assetID=",assetID)
         // Get the state from the ledger
     assetBytes, err:= stub.GetState(assetID)
-    fmt.Println("assetBytes=",assetBytes)
+    b.Write([]byte(assetBytes))
+    fmt.Println("assetBytes=",assetBytes,"b=",b)
     if err != nil  || len(assetBytes) ==0{
         err = errors.New("Unable to get asset state from ledger")
         return nil, err
@@ -316,14 +317,13 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
         x = append(x,b[j])
     }
     }*/    
-	x := listAsset[1]
+	x := listAsset[1] // for now temporary position of new Asset be 1
 	binary.Write(&bin_buf, binary.BigEndian,x)
 	fmt.Printf("% x", sha1.Sum(bin_buf.Bytes()))    
     buf, err = json.Marshal(bin_buf)
     //_, err = w.Write(buf)
     fmt.Println("buf=",buf)
     err = stub.PutState(assetID, buf)
-    fmt.Println(err)
     if err != nil {
         err = errors.New("PUT ledger state failed: "+ fmt.Sprint(err))  
  	
