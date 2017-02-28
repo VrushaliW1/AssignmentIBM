@@ -202,7 +202,7 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
     var assetID string // asset ID
     var err error
     //var b bytes.Buffer
-    var obj string
+    //var obj string
     fmt.Println("in readAsset")
      // validate input data for number of args, Unmarshaling to asset state and obtain asset id
     stateIn, err:= t.validateInput(args)
