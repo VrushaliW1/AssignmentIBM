@@ -280,7 +280,7 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
     var assetID string                 // asset ID                    // used when looking in map
     var err error
     var stateIn AssetState
-    var stateStub AssetState   
+    //var stateStub AssetState   
     //var x = []byte{}
     var bin_buf bytes.Buffer
     var buf []byte
@@ -301,10 +301,10 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
     //listAsset[len(listAsset)-1:][0]
     //fmt.Println("len of array" , listAsset[len(listAsset)-1])
 	//fmt.Println("assetbyte= ", assetBytes)
-    if err != nil || len(assetBytes)==0{
+    /*if err != nil || len(assetBytes)==0{
         // This implies that this is a 'create' scenario
          stateStub = stateIn // The record that goes into the stub is the one that cme in
-    } 
+    } */
     //stateJSON, err := json.Marshal(stateStub)
 	/*for i:=0; i<len(listAsset); i++{
     b := []byte(listAsset[i])
