@@ -24,10 +24,13 @@ package main
 import (
     "encoding/json"
     "errors"
-    "fmt"
+    "crypto/sha1"
+	"fmt"
+	"encoding/binary"
+	"bytes"
    "strings"
      "reflect"
-     "strconv"
+     //"strconv"
     "github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
@@ -254,7 +257,7 @@ func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err 
     //var i string
     //i = pro.AssetID // temporary start with AssetID = 1
     var index int
-    index = strconv.Atoi(pro.AssetID)
+    index = 1 //strconv.Atoi(pro.AssetID)
     listAsset[index].AssetID = pro.AssetID
     listAsset[index].AssetName = pro.AssetName
     return pro, nil
@@ -278,7 +281,9 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
     var err error
     var stateIn AssetState
     var stateStub AssetState   
-  
+    //var x = []byte{}
+    var bin_buf bytes.Buffer
+    var buf []byte
     // validate input data for number of args, Unmarshaling to asset state and obtain asset id
 	
     stateIn, err = t.validateInput(args)
@@ -301,8 +306,18 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
          stateStub = stateIn // The record that goes into the stub is the one that cme in
     } 
     stateJSON, err := json.Marshal(stateStub)
-	
-    err = stub.PutState(assetID, stateJSON)
+	/*for i:=0; i<len(listAsset); i++{
+    b := []byte(listAsset[i])
+    for j:=0; j<len(b); j++{
+        x = append(x,b[j])
+    }
+    }*/    
+	x := listAsset[1]
+	binary.Write(&bin_buf, binary.BigEndian,x)
+	fmt.Printf("% x", sha1.Sum(bin_buf.Bytes()))    
+    buf, err = json.Marshal(bin_buf)
+    //_, err = w.Write(buf)
+    err = stub.PutState(assetID, buf)
     if err != nil {
         err = errors.New("PUT ledger state failed: "+ fmt.Sprint(err))  
  	
