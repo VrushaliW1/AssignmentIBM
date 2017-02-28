@@ -240,7 +240,7 @@ func (t *SimpleChaincode) readAssetObjectModel(stub shim.ChaincodeStubInterface,
 // validate input data : common method called by the CRUD functions
 // ************************************
 func (t *SimpleChaincode) validateInput(args []string) (stateIn AssetState, err error) {
-    var assetID string // asset ID
+    //var assetID string // asset ID
     var state AssetState = AssetState{} // The calling function is expecting an object of type AssetState    	
     if len(args) !=1 {
         err = errors.New("Incorrect number of arguments. Expecting a JSON strings with mandatory assetID")
@@ -305,7 +305,7 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
         // This implies that this is a 'create' scenario
          stateStub = stateIn // The record that goes into the stub is the one that cme in
     } 
-    stateJSON, err := json.Marshal(stateStub)
+    //stateJSON, err := json.Marshal(stateStub)
 	/*for i:=0; i<len(listAsset); i++{
     b := []byte(listAsset[i])
     for j:=0; j<len(b); j++{
