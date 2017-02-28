@@ -287,6 +287,7 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
     // validate input data for number of args, Unmarshaling to asset state and obtain asset id
 	
     stateIn, err = t.validateInput(args)
+    fmt.Println("createUpdate")
 	assetID = stateIn.AssetID
     if err != nil {
         return nil, err
@@ -317,7 +318,7 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
 	fmt.Printf("% x", sha1.Sum(bin_buf.Bytes()))    
     buf, err = json.Marshal(bin_buf)
     //_, err = w.Write(buf)
-    fmt.Println(buf)
+    fmt.Println("buf",buf)
     err = stub.PutState(assetID, buf)
     if err != nil {
         err = errors.New("PUT ledger state failed: "+ fmt.Sprint(err))  
