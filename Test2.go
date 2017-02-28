@@ -321,8 +321,9 @@ func (t *SimpleChaincode) createOrUpdateAsset(stub shim.ChaincodeStubInterface, 
 	fmt.Printf("% x", sha1.Sum(bin_buf.Bytes()))    
     buf, err = json.Marshal(bin_buf)
     //_, err = w.Write(buf)
-    fmt.Println("buf==",buf)
+    fmt.Println("buf=",buf)
     err = stub.PutState(assetID, buf)
+    fmt.Println(err)
     if err != nil {
         err = errors.New("PUT ledger state failed: "+ fmt.Sprint(err))  
  	
