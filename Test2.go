@@ -218,7 +218,7 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
     //b.Write([]byte(assetBytes))
     //obj = string(byteArray[assetBytes])
     
-    //fmt.Println("assetBytes=",assetBytes)
+    fmt.Println("assetBytes=",assetBytes)
     if err != nil  || len(assetBytes) ==0{
         err = errors.New("Unable to get asset state from ledger")
         return nil, err
