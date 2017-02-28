@@ -201,6 +201,8 @@ func (t *SimpleChaincode) deleteAsset(stub shim.ChaincodeStubInterface, args []s
 func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     var assetID string // asset ID
     var err error
+    var bin_buf bytes.Buffer
+    var buf []byte
     //var b bytes.Buffer
     var state AssetState
     fmt.Println("in readAsset")    
@@ -217,10 +219,9 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
     assetBytes, err:= stub.GetState(assetID)
     //b.Write([]byte(assetBytes))
     //obj = string(byteArray[assetBytes])
-    binary.Write(&bin_buf, binary.BigEndian,x)
-	fmt.Printf("% x", sha1.Sum(bin_buf.Bytes()))    
-    buf, err = json.Marshal(bin_buf)
-    //_, err = w.Write(buf)
+    binary.Write(&bin_buf, binary.BigEndian,assetBytes)
+	fmt.Printf("% assetBytes=", sha1.Sum(bin_buf.Bytes()))    
+    buf, err = json.Marshal(bin_buf)    
     fmt.Println("buf=",buf)
     fmt.Println("assetBytes=",buf)
     //fmt.Println(json.Unmarshal(assetBytes,&state))
