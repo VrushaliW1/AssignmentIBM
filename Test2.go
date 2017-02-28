@@ -203,7 +203,8 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
     var err error
     //var b bytes.Buffer
     //var obj string
-    fmt.Println("in readAsset")
+    fmt.Println("in readAsset")    
+    fmt.Println(listAsset)
      // validate input data for number of args, Unmarshaling to asset state and obtain asset id
     stateIn, err:= t.validateInput(args)
     fmt.Println("stateIn=",stateIn)
@@ -216,10 +217,7 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
     assetBytes, err:= stub.GetState(assetID)
     //b.Write([]byte(assetBytes))
     //obj = string(byteArray[assetBytes])
-    b, _ := json.Marshal(assetBytes)
-    // Convert bytes to string.
-    s := string(b)
-    fmt.Println(s)
+    
     //fmt.Println("assetBytes=",assetBytes)
     if err != nil  || len(assetBytes) ==0{
         err = errors.New("Unable to get asset state from ledger")
