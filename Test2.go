@@ -205,13 +205,15 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
     fmt.Println("in readAsset")
      // validate input data for number of args, Unmarshaling to asset state and obtain asset id
     stateIn, err:= t.validateInput(args)
-    fmt.Println(stateIn)
+    fmt.Println("stateIn=",stateIn)
     if err != nil {
         return nil, errors.New("Asset does not exist!")
     }
     assetID = stateIn.AssetID
+    fmt.Println("assetID=",assetID)
         // Get the state from the ledger
     assetBytes, err:= stub.GetState(assetID)
+    fmt.Println("assetBytes=",assetBytes)
     if err != nil  || len(assetBytes) ==0{
         err = errors.New("Unable to get asset state from ledger")
         return nil, err
