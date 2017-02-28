@@ -76,14 +76,14 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	}	
 	for j := 0; j < 10; j++ {
 	fmt.Println(arrAssetState[0])		
-	}*/
+	}
     fmt.Println("in init")    
     listAsset[0].AssetID = "1"    
     listAsset[0].AssetName = "a" 
     fmt.Println(listAsset[0])
     //listAsset[0] = obj 
     fmt.Println(listAsset)
-    fmt.Println("after list")
+    fmt.Println("after list")*/
     if len(args) != 1 {
         return nil, errors.New("init expects one argument, a JSON string with tagged version string")
     }
