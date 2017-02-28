@@ -218,7 +218,7 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
         err = errors.New("Unable to get asset state from ledger")
         return nil, err
     } 
-    err = json.Unmarshal(assetBytes, &state)
+    err = json.Unmarshal(assetBytes, &stateIn)
     if err != nil {
          err = errors.New("Unable to unmarshal state data obtained from ledger")
         return nil, err
