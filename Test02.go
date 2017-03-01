@@ -2672,31 +2672,12 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 		return nil, err
 	}
 
-	// is assetID present or blank?
-	assetIDBytes, found := getObject(argsMap, ASSETID)
-	if found {
-		assetID, found = assetIDBytes.(string)
-		if !found || assetID == "" {
-			err := errors.New("readAccount arg does not include assetID")
-			log.Error(err)
-			return nil, err
-		}
-	}
 	// Is asset name present?
 	
-	sMsg := "Inside readAsset assetName: " + assetName
-	log.Info(sMsg)
-	if strings.Contains(assetName, "Plug") {
-		assetType = "smartplug"
-	} else {
-		assetType = "motor"
-	}
-	sMsgTyoe := "Inside readAsset assetType: " + assetType
-	log.Info(sMsgTyoe)
-	sAssetKey := assetID + "_" + assetType
+	sAssetKey := accountID //+ "_" + assetType
 	found = assetIsActive(stub, sAssetKey)
 	if !found {
-		err := fmt.Errorf("readAsset arg asset %s of type %s does not exist", assetID, assetType)
+		err := fmt.Errorf("readAsset arg asset %s of type %s does not exist", accountID)
 		log.Error(err)
 		return nil, err
 	}
@@ -2704,7 +2685,7 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 	// Get the state from the ledger
 	assetBytes, err = stub.GetState(sAssetKey)
 	if err != nil {
-		log.Errorf("readAsset assetID %s of type %s failed GETSTATE", assetID, assetType)
+		log.Errorf("readAsset assetID %s of type %s failed GETSTATE", accountID)
 		return nil, err
 	}
 
