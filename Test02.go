@@ -221,7 +221,9 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	if function == "readAsset" {
 		return t.readAsset(stub, args)
-	} else if function == "readAllAssets" {
+	} else if function == "readAccount" {
+        return t.readAccount(stub,args)
+    } else if function == "readAllAssets" {
 		return t.readAllAssets(stub, args)
 	} else if function == "readRecentStates" {
 		return readRecentStates(stub)
