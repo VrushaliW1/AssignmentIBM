@@ -2642,9 +2642,9 @@ func getActiveAccounts(stub shim.ChaincodeStubInterface) ([]string, error) {
 
 func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var accountID string
-	var accountName string
+	//var accountName string
 	//var assetName string
-	var argsMap ArgsMap
+	//var argsMap ArgsMap
 	var request interface{}
 	var assetBytes []byte
 	var found bool
