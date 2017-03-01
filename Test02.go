@@ -1070,7 +1070,6 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
 
 	return assetBytes, nil
 }
-
 // ************************************
 // readAllAssets
 // ************************************
@@ -2569,7 +2568,8 @@ func addAccountToContractState(stub shim.ChaincodeStubInterface, sAssetKey strin
     log.Debugf("Adding asset %s to contract", sAssetKey)
     state.ActiveAccounts[sAssetKey] = true
     return PUTContractStateToLedger(stub, state)
-}// ************************************
+}
+// ************************************
 // readAllAssets
 // ************************************
 func (t *SimpleChaincode) readAllAccounts(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
@@ -2638,49 +2638,36 @@ func getActiveAccounts(stub shim.ChaincodeStubInterface) ([]string, error) {
     return a, nil
 }
 
-//----------------------------Issue asset to Account----------------------------------------------
+//readAccount
 
-func (t *SimpleChaincode) IssueAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-	var assetID string
+func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var accountID string
-	var assetQuantity int
+	var accountName string
+	//var assetName string
 	var argsMap ArgsMap
-	var event interface{}
+	var request interface{}
+	var assetBytes []byte
 	var found bool
 	var err error
-	//var timeIn time.Time
 
-	log.Info("Entering IssueAsset")
-
-	// allowing 2 args because updateAsset is allowed to redirect when
-	// asset does not exist
-	if len(args) < 1 || len(args) > 2 {
+	if len(args) != 1 {
 		err = errors.New("Expecting one JSON event object")
 		log.Error(err)
 		return nil, err
 	}
 
-	assetID = ""
-	accountID = ""
-	//assetQuantity = 0
-	eventBytes := []byte(args[0])
-	log.Debugf("IssueAsset arg: %s", args[0])
+	requestBytes := []byte(args[0])
+	log.Debugf("readAccount arg: %s", args[0])
 
-	err = json.Unmarshal(eventBytes, &event)
+	err = json.Unmarshal(requestBytes, &request)
 	if err != nil {
-		log.Errorf("IssueAsset failed to unmarshal arg: %s", err)
+		log.Errorf("readAccount failed to unmarshal arg: %s", err)
 		return nil, err
 	}
 
-	if event == nil {
-		err = errors.New("IssueAsset unmarshal arg created nil event")
-		log.Error(err)
-		return nil, err
-	}
-
-	argsMap, found = event.(map[string]interface{})
-	if !found {	
-		err := errors.New("IssueAsset arg is not a map shape")
+	argsMap, found = request.(map[string]interface{})
+	if !found {
+		err := errors.New("readAccount arg is not a map shape")
 		log.Error(err)
 		return nil, err
 	}
@@ -2690,97 +2677,36 @@ func (t *SimpleChaincode) IssueAsset(stub shim.ChaincodeStubInterface, args []st
 	if found {
 		assetID, found = assetIDBytes.(string)
 		if !found || assetID == "" {
-			err := errors.New("IssueAsset arg does not include assetID ")
+			err := errors.New("readAccount arg does not include assetID")
 			log.Error(err)
 			return nil, err
 		}
 	}
-	sAssetKey := assetID + accountID
-	found = assetIsActive(stub, sAssetKey)
-	if found {
-		err := fmt.Errorf("IssueAsset arg asset %s of type %s already exists", assetID, accountID)
-		log.Error(err)
-		return nil, err
-	}
-
-	// For now, timestamp is being sent in from the invocation to the contract
-	// Once the BlueMix instance supports GetTxnTimestamp, we will incorporate the
-	// changes to the contract
-
-	// run the rules and raise or clear alerts
-	alerts := newAlertStatus()
-	if argsMap.executeRules(&alerts) {
-		// NOT compliant!
-		log.Noticef("IssueAsset assetID %s of type %s is noncompliant", assetID, accountID)
-		argsMap["alerts"] = alerts
-		delete(argsMap, "incompliance")
+	// Is asset name present?
+	
+	sMsg := "Inside readAsset assetName: " + assetName
+	log.Info(sMsg)
+	if strings.Contains(assetName, "Plug") {
+		assetType = "smartplug"
 	} else {
-		if alerts.AllClear() {
-			// all false, no need to appear
-			delete(argsMap, "alerts")
-		} else {
-			argsMap["alerts"] = alerts
-		}
-		argsMap["incompliance"] = true
+		assetType = "motor"
 	}
-
-	// copy incoming event to outgoing state
-	// this contract respects the fact that createAsset can accept a partial state
-	// as the moral equivalent of one or more discrete events
-	// further: this contract understands that its schema has two discrete objects
-	// that are meant to be used to send events: common, and custom
-	stateOut := argsMap
-
-	// save the original event
-	stateOut["lastEvent"] = make(map[string]interface{})
-	stateOut["lastEvent"].(map[string]interface{})["function"] = "createAsset"
-	stateOut["lastEvent"].(map[string]interface{})["args"] = args[0]
-	if len(args) == 2 {
-		// in-band protocol for redirect
-		stateOut["lastEvent"].(map[string]interface{})["redirectedFromFunction"] = args[1]
-	}
-
-	// marshal to JSON and write
-	stateJSON, err := json.Marshal(&stateOut)
-	if err != nil {
-		err := fmt.Errorf("IssueAsset state for assetID %s failed to marshal", assetID)
+	sMsgTyoe := "Inside readAsset assetType: " + assetType
+	log.Info(sMsgTyoe)
+	sAssetKey := assetID + "_" + assetType
+	found = assetIsActive(stub, sAssetKey)
+	if !found {
+		err := fmt.Errorf("readAsset arg asset %s of type %s does not exist", assetID, assetType)
 		log.Error(err)
 		return nil, err
 	}
 
-	// finally, put the new state
-	log.Infof("Putting new asset state %s to ledger", string(stateJSON))
-	// The key i 'assetid'_'type'
-
-	err = stub.PutState(sAssetKey, []byte(stateJSON))
+	// Get the state from the ledger
+	assetBytes, err = stub.GetState(sAssetKey)
 	if err != nil {
-		err = fmt.Errorf("IssueAsset AssetID %s of Type %s PUTSTATE failed: %s", assetID, accountID, err)
-		log.Error(err)
-		return nil, err
-	}
-	log.Infof("createAsset AssetID %s of type %s state successfully written to ledger: %s", assetID, accountID, string(stateJSON))
-
-	// add asset to contract state
-	err = addAssetToContractState(stub, sAssetKey)
-	if err != nil {
-		err := fmt.Errorf("IssueAsset asset %s of type %s failed to write asset state: %s", assetID, accountID, err)
-		log.Critical(err)
+		log.Errorf("readAsset assetID %s of type %s failed GETSTATE", assetID, assetType)
 		return nil, err
 	}
 
-	err = pushRecentState(stub, string(stateJSON),"0")
-	if err != nil {
-		err = fmt.Errorf("IssueAsset AssetID %s of type %s push to recentstates failed: %s", assetID, accountID, err)
-		log.Error(err)
-		return nil, err
-	}
-
-	// save state history
-	err = createStateHistory(stub, sAssetKey, string(stateJSON))
-	if err != nil {
-		err := fmt.Errorf("IssueAsset asset %s of type %s state history save failed: %s", assetID, sAssetKey, err)
-		log.Critical(err)
-		return nil, err
-	}
-	return nil, nil
+	return assetBytes, nil
 }
