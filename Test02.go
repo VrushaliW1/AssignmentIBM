@@ -2644,7 +2644,7 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 	var accountID string
 	//var accountName string
 	//var assetName string
-	//var argsMap ArgsMap
+	var argsMap ArgsMap
 	var request interface{}
 	var assetBytes []byte
 	var found bool
@@ -2667,7 +2667,7 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 
 	argsMap, found = request.(map[string]interface{})
 	if !found {
-		err := errors.New("readAccount arg is not a map shape")
+		err := errors.New("readAccount arg is not a map shape",argsMap)
 		log.Error(err)
 		return nil, err
 	}
