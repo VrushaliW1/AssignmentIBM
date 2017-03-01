@@ -2667,7 +2667,7 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 
 	argsMap, found = request.(map[string]interface{})
 	if !found {
-		err := errors.New("readAccount arg is not a map shape",argsMap)
+		err := errors.New("readAccount arg is not a map shape")
 		log.Error(err)
 		return nil, err
 	}
@@ -2677,7 +2677,7 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 	sAssetKey := accountID //+ "_" + assetType
 	found = assetIsActive(stub, sAssetKey)
 	if !found {
-		err := fmt.Errorf("readAsset arg asset %s of type %s does not exist", accountID)
+		err := fmt.Errorf("readAsset arg asset %s of type %s does not exist", accountID, argsMap)
 		log.Error(err)
 		return nil, err
 	}
