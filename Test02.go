@@ -2652,13 +2652,8 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 	var found bool
 	var err error
 
-	if len(args) != 1 {
-		err = errors.New("Expecting one JSON event object")
-		log.Error(err)
-		return nil, err
-	}
-
 	requestBytes := []byte(args[0])
+	fmt.Println(requestBytes)
 	log.Debugf("readAsset arg: %s", args[0])
 
 	err = json.Unmarshal(requestBytes, &request)
@@ -2704,6 +2699,7 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 	sMsgTyoe := "Inside readAsset assetType: " + accountType
 	log.Info(sMsgTyoe)
 	sAssetKey := accountID + "_" + accountType
+	fmt.Println(sAssetKey)
 	found = assetIsActive(stub, sAssetKey)
 	if !found {
 		err := fmt.Errorf("readAsset arg asset %s of type %s does not exist", accountID, accountType)
