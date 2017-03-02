@@ -2703,7 +2703,7 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 	}
 	sMsgTyoe := "Inside readAsset assetType: " + assetType
 	log.Info(sMsgTyoe)
-	sAssetKey := accountID + "_" + assetType
+	sAssetKey := accountID //+ "_" + assetType
 	found = assetIsActive(stub, sAssetKey)
 	if !found {
 		err := fmt.Errorf("readAsset arg asset %s of type %s does not exist", accountID, assetType)
