@@ -2406,21 +2406,20 @@ func (alerts *AlertStatusInternal) calculateContractCompliance (a *ArgsMap) (boo
 // ************************************
 // createAccount
 // ************************************
-func (t *SimpleChaincode) createAccount(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) 
-{
+func (t *SimpleChaincode) createAccount(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var accountID string
 	var accountType string
 	var accountName string
-        var accountBalance int
+    var accountBalance int
 	var argsMap ArgsMap
 	var event interface{}
 	var found bool
 	var err error
 	
-	accountID = ""	
-	accountName = ""
+	//accountID = ""	
+	//accountName = ""
 	eventBytes := []byte(args[0])
-	fmt.PrintLn(eventBytes)
+	fmt.Println("eventBytes",eventBytes)
 	log.Debugf("createAccount arg: %s", args[0])
 	fmt.Println("args[0]",args[0])
 	err = json.Unmarshal(eventBytes, &event)
