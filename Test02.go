@@ -2653,6 +2653,7 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 	var err error
 
 	requestBytes := []byte(args[0])
+	fmt.Println("accountType first =", accountType)
 	fmt.Println(requestBytes)
 	log.Debugf("readAsset arg: %s", args[0])
 
@@ -2689,6 +2690,7 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 			return nil, err
 		}
 	}
+	fmt.Println("accountType second =", accountType)
 	sMsg := "Inside readAsset accountName: " + accountName
 	log.Info(sMsg)
 	if strings.Contains(accountName, "Plug") {
@@ -2698,6 +2700,7 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 	}
 	sMsgTyoe := "Inside readAsset assetType: " + accountType
 	log.Info(sMsgTyoe)
+	fmt.Println("accountType 3rd =", accountType)
 	sAssetKey := accountID + "_" + accountType
 	fmt.Println(sAssetKey)
 	found = assetIsActive(stub, sAssetKey)
