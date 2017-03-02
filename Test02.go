@@ -2697,9 +2697,9 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 	sMsg := "Inside readAsset accountName: " + accountName
 	log.Info(sMsg)
 	if strings.Contains(accountName, "Plug") {
-		assetType = "smartplug"
+		accountType = "smartplug"
 	} else {
-		assetType = "motor"
+		accountType = "motor"
 	}
 	sMsgTyoe := "Inside readAsset assetType: " + accountType
 	log.Info(sMsgTyoe)
