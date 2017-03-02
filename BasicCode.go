@@ -2410,7 +2410,7 @@ func (t *SimpleChaincode) createAccount(stub shim.ChaincodeStubInterface, args [
 	var accountID string
 	var accountType string
 	var accountName string
-    //var accountBalance int
+    var accountBalance string
 	var argsMap ArgsMap
 	var event interface{}
 	var found bool
@@ -2419,7 +2419,6 @@ func (t *SimpleChaincode) createAccount(stub shim.ChaincodeStubInterface, args [
 	//accountID = ""	
 	//accountName = ""
 	eventBytes := []byte(args[0])
-	fmt.Println("eventBytes",eventBytes)
 	log.Debugf("createAccount arg: %s", args[0])
 	fmt.Println("args[0]",args[0])
 	err = json.Unmarshal(eventBytes, &event)
@@ -2440,7 +2439,18 @@ func (t *SimpleChaincode) createAccount(stub shim.ChaincodeStubInterface, args [
 		log.Error(err)
 		return nil, err
 	}
-
+    
+    balanceBytes, found := getObject(argsMap, accountBalance)
+	fmt.Println("balanceBytes",balanceBytes)
+	
+	if found {
+		accountBalance, found = balanceBytes.(string)
+		if !found || accountBalance == "" {
+			err := errors.New("createAccount arg does not include accountBalance ")
+			log.Error(err)
+			return nil, err
+		}
+	}
 	// is accountID present or blank?
 	assetIDBytes, found := getObject(argsMap, ACCOUNTID)
 	fmt.Println("assetIDBytes",assetIDBytes)
