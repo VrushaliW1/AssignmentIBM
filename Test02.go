@@ -2459,7 +2459,7 @@ func (t *SimpleChaincode) createAccount(stub shim.ChaincodeStubInterface, args [
 	}
 
 
-    assetType="account"
+    //assetType="account"
 	sAccountKey := accountID + "_" + assetType
 	fmt.Println("sAccountKey",sAccountKey)
 	found = accountIsActive(stub, sAccountKey)
