@@ -2406,30 +2406,21 @@ func (alerts *AlertStatusInternal) calculateContractCompliance (a *ArgsMap) (boo
 // ************************************
 // createAccount
 // ************************************
-func (t *SimpleChaincode) createAccount(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *SimpleChaincode) createAccount(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) 
+{
 	var accountID string
 	var accountType string
 	var accountName string
+        var accountBalance int
 	var argsMap ArgsMap
 	var event interface{}
 	var found bool
 	var err error
-	//var timeIn time.Time
-
-	log.Info("Entering createAsset")
-
-	// allowing 2 args because updateAsset is allowed to redirect when
-	// asset does not exist
-	if len(args) < 1 || len(args) > 2 {
-		err = errors.New("Expecting one JSON event object")
-		log.Error(err)
-		return nil, err
-	}
-
-	accountID = ""
 	
+	accountID = ""	
 	accountName = ""
 	eventBytes := []byte(args[0])
+	fmt.PrintLn(eventBytes)
 	log.Debugf("createAccount arg: %s", args[0])
 	fmt.Println("args[0]",args[0])
 	err = json.Unmarshal(eventBytes, &event)
@@ -2512,14 +2503,14 @@ func (t *SimpleChaincode) createAccount(stub shim.ChaincodeStubInterface, args [
 	// that are meant to be used to send events: common, and custom
 	stateOut := argsMap
 
-	// save the original event
+	/* save the original event
 	stateOut["lastEvent"] = make(map[string]interface{})
 	stateOut["lastEvent"].(map[string]interface{})["function"] = "createAccount"
 	stateOut["lastEvent"].(map[string]interface{})["args"] = args[0]
 	if len(args) == 2 {
 		// in-band protocol for redirect
 		stateOut["lastEvent"].(map[string]interface{})["redirectedFromFunction"] = args[1]
-	}
+	}*/
 
 	// marshal to JSON and write
 	stateJSON, err := json.Marshal(&stateOut)
