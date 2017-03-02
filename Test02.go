@@ -2687,7 +2687,7 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 	// Get the state from the ledger
 	assetBytes, err = stub.GetState(sAssetKey)
 	if err != nil {
-		log.Errorf("readAccount assetID %s of type %s failed GETSTATE", accountID)
+		log.Errorf("readAccount assetID %s of type %s failed GETSTATE", accountID,argsMap)
 		return nil, err
 	}
 
