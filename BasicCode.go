@@ -2410,7 +2410,7 @@ func (t *SimpleChaincode) createAccount(stub shim.ChaincodeStubInterface, args [
 	var accountID string
 	var accountType string
 	var accountName string
-    var accountBalance int
+    //var accountBalance int
 	var argsMap ArgsMap
 	var event interface{}
 	var found bool
@@ -2463,9 +2463,7 @@ func (t *SimpleChaincode) createAccount(stub shim.ChaincodeStubInterface, args [
 			return nil, err
 		}
 	}
-
-
-	sAccountKey := accountID + "_" + accountType
+	sAccountKey := accountID + "_" + accountType 
 	fmt.Println("sAccountKey",sAccountKey)
 	found = accountIsActive(stub, sAccountKey)
 	if found {
