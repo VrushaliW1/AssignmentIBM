@@ -2440,18 +2440,7 @@ func (t *SimpleChaincode) createAccount(stub shim.ChaincodeStubInterface, args [
 		return nil, err
 	}
     
-    balanceBytes, found := getObject(argsMap, accountBalance)
-	fmt.Println("balanceBytes",balanceBytes)
-	
-	if found {
-		accountBalance, found = balanceBytes.(string)
-		if !found || accountBalance == "" {
-			err := errors.New("createAccount arg does not include accountBalance ")
-			log.Error(err)
-			return nil, err
-		}
-	}
-	// is accountID present or blank?
+    // is accountID present or blank?
 	assetIDBytes, found := getObject(argsMap, ACCOUNTID)
 	fmt.Println("assetIDBytes",assetIDBytes)
 	
@@ -2490,7 +2479,7 @@ func (t *SimpleChaincode) createAccount(stub shim.ChaincodeStubInterface, args [
 	alerts := newAlertStatus()
 	if argsMap.executeRules(&alerts) {
 		// NOT compliant!
-		log.Noticef("createAccout accountID %s is noncompliant", accountID)
+		log.Noticef("createAccout accountID %s is noncompliant", accountID, accountBalance)
 		argsMap["alerts"] = alerts
 		delete(argsMap, "incompliance")
 	} else {
