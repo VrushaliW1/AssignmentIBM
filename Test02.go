@@ -2703,12 +2703,12 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 	fmt.Println("accountType 3rd =", accountType)
 	sAssetKey := accountID + "_" + accountType
 	fmt.Println(sAssetKey)
-	found = assetIsActive(stub, sAssetKey)
+	/*found = assetIsActive(stub, sAssetKey)
 	if !found {
 		err := fmt.Errorf("readAsset arg asset %s of type %s does not exist", accountID, accountType)
 		log.Error(err)
 		return nil, err
-	}
+	}*/
 
 	// Get the state from the ledger
 	assetBytes, err = stub.GetState(sAssetKey)
