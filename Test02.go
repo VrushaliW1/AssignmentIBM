@@ -2677,17 +2677,17 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 	// Is asset name present?
 	
 	sAssetKey := accountID //+ "_" + assetType
-	found = assetIsActive(stub, sAssetKey)
+	/*found = assetIsActive(stub, sAssetKey)
 	if !found {
-		err := fmt.Errorf("readAsset arg asset %s of type %s does not exist", accountID, argsMap)
+		err := fmt.Errorf("readAccount arg asset %s of type %s does not exist", accountID, argsMap)
 		log.Error(err)
 		return nil, err
-	}
+	}*/
 
 	// Get the state from the ledger
 	assetBytes, err = stub.GetState(sAssetKey)
 	if err != nil {
-		log.Errorf("readAsset assetID %s of type %s failed GETSTATE", accountID)
+		log.Errorf("readAccount assetID %s of type %s failed GETSTATE", accountID)
 		return nil, err
 	}
 
