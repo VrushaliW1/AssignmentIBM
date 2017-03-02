@@ -2644,8 +2644,8 @@ func getActiveAccounts(stub shim.ChaincodeStubInterface) ([]string, error) {
 
 func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var accountID string
-	var assetType string
-	var assetName string
+	var accountType string
+	var accountName string
 	var argsMap ArgsMap
 	var request interface{}
 	var assetBytes []byte
@@ -2685,28 +2685,28 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 		}
 	}
 	// Is asset name present?
-	assetTypeBytes, found := getObject(argsMap, ASSETNAME)
+	assetTypeBytes, found := getObject(argsMap, ACCOUNTNAME)
 	if found {
-		assetName, found = assetTypeBytes.(string)
-		if !found || assetName == "" {
-			err := errors.New("createAsset arg does not include assetName ")
+		accountName, found = assetTypeBytes.(string)
+		if !found || accountName == "" {
+			err := errors.New("createAsset arg does not include accountName ")
 			log.Error(err)
 			return nil, err
 		}
 	}
-	sMsg := "Inside readAsset assetName: " + assetName
+	sMsg := "Inside readAsset accountName: " + accountName
 	log.Info(sMsg)
-	if strings.Contains(assetName, "Plug") {
+	if strings.Contains(accountName, "Plug") {
 		assetType = "smartplug"
 	} else {
 		assetType = "motor"
 	}
-	sMsgTyoe := "Inside readAsset assetType: " + assetType
+	sMsgTyoe := "Inside readAsset assetType: " + accountType
 	log.Info(sMsgTyoe)
-	sAssetKey := accountID //+ "_" + assetType
+	sAssetKey := accountID + "_" + accountType
 	found = assetIsActive(stub, sAssetKey)
 	if !found {
-		err := fmt.Errorf("readAsset arg asset %s of type %s does not exist", accountID, assetType)
+		err := fmt.Errorf("readAsset arg asset %s of type %s does not exist", accountID, accountType)
 		log.Error(err)
 		return nil, err
 	}
@@ -2714,7 +2714,7 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 	// Get the state from the ledger
 	assetBytes, err = stub.GetState(sAssetKey)
 	if err != nil {
-		log.Errorf("readAsset assetID %s of type %s failed GETSTATE", accountID, assetType)
+		log.Errorf("readAsset assetID %s of type %s failed GETSTATE", accountID, accountType)
 		return nil, err
 	}
 
