@@ -2644,8 +2644,8 @@ func getActiveAccounts(stub shim.ChaincodeStubInterface) ([]string, error) {
 
 func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var accountID string
-	//var accountName string
-	//var assetName string
+	var assetType string
+	var assetName string
 	var argsMap ArgsMap
 	var request interface{}
 	var assetBytes []byte
@@ -2659,37 +2659,65 @@ func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []s
 	}
 
 	requestBytes := []byte(args[0])
-	log.Debugf("readAccount arg: %s", args[0])
+	log.Debugf("readAsset arg: %s", args[0])
 
 	err = json.Unmarshal(requestBytes, &request)
 	if err != nil {
-		log.Errorf("readAccount failed to unmarshal arg: %s", err)
+		log.Errorf("readAsset failed to unmarshal arg: %s", err)
 		return nil, err
 	}
 
 	argsMap, found = request.(map[string]interface{})
 	if !found {
-		err := errors.New("readAccount arg is not a map shape")
+		err := errors.New("readAsset arg is not a map shape")
 		log.Error(err)
 		return nil, err
 	}
 
+	// is assetID present or blank?
+	assetIDBytes, found := getObject(argsMap, ACCOUNTID)
+	if found {
+		accountID, found = assetIDBytes.(string)
+		if !found || accountID == "" {
+			err := errors.New("readAsset arg does not include assetID")
+			log.Error(err)
+			return nil, err
+		}
+	}
 	// Is asset name present?
-	
-	sAssetKey := accountID //+ "_" + assetType
-	/*found = assetIsActive(stub, sAssetKey)
+	assetTypeBytes, found := getObject(argsMap, ASSETNAME)
+	if found {
+		assetName, found = assetTypeBytes.(string)
+		if !found || assetName == "" {
+			err := errors.New("createAsset arg does not include assetName ")
+			log.Error(err)
+			return nil, err
+		}
+	}
+	sMsg := "Inside readAsset assetName: " + assetName
+	log.Info(sMsg)
+	if strings.Contains(assetName, "Plug") {
+		assetType = "smartplug"
+	} else {
+		assetType = "motor"
+	}
+	sMsgTyoe := "Inside readAsset assetType: " + assetType
+	log.Info(sMsgTyoe)
+	sAssetKey := accountID + "_" + assetType
+	found = assetIsActive(stub, sAssetKey)
 	if !found {
-		err := fmt.Errorf("readAccount arg asset %s of type %s does not exist", accountID, argsMap)
+		err := fmt.Errorf("readAsset arg asset %s of type %s does not exist", accountID, assetType)
 		log.Error(err)
 		return nil, err
-	}*/
+	}
 
 	// Get the state from the ledger
 	assetBytes, err = stub.GetState(sAssetKey)
 	if err != nil {
-		log.Errorf("readAccount assetID %s of type %s failed GETSTATE", accountID,argsMap)
+		log.Errorf("readAsset assetID %s of type %s failed GETSTATE", accountID, assetType)
 		return nil, err
 	}
 
 	return assetBytes, nil
 }
+
