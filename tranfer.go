@@ -3107,10 +3107,11 @@ func (t *SimpleChaincode) transferAsset(stub shim.ChaincodeStubInterface, args [
 	fmt.Println("fromAcc array=",fromAcc)
 
 	toAcc := make([]string, 3)
-	toAcc[0] = result[1]
+	toAcc[0] = result[0]
 	toAcc[1] = result[2]
 	toAcc[2] = result[3]
 	fmt.Println("toAcc array=",toAcc)
+
 	/*var pro AccountFrom	
     err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&pro)*/
 
