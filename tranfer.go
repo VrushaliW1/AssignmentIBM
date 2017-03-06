@@ -3068,7 +3068,7 @@ func getissueActiveAccounts(stub shim.ChaincodeStubInterface) ([]string, error) 
 //*****************************************************************Transfer******************************************
 
 func (t *SimpleChaincode) transferAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-    var state ContractState
+    //var state ContractState
 	var accountIDTo string
 	var assetID string
     var accountID string
