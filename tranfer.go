@@ -11,10 +11,7 @@ import (
 	"strings"
 	"time"
 	 "sort"
-	
-
 )
-
 
 //***************************************************
 const MYVERSION string = "1.0"
@@ -37,6 +34,7 @@ type ContractState struct {
 	IssueAccounts map[string]bool  `json:"IssueAccounts"`
 	//TransferAccounts map[string]bool  `json:"TransferAccounts"`
 }
+
 //*************************************************** Recent 
 // RECENTSTATESKEY is used as key for recent states bucket
 const RECENTSTATESKEY string = "RecentStatesKey"
@@ -3070,14 +3068,14 @@ func getissueActiveAccounts(stub shim.ChaincodeStubInterface) ([]string, error) 
 //*****************************************************************Transfer******************************************
 
 func (t *SimpleChaincode) transferAsset(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-//	var accountIDFrom string
+    var state ContractState
 	var accountIDTo string
 	var assetID string
     var accountID string
 	var argsMap ArgsMap
-		//var argsMapTo ArgsMap
+	//var argsMapTo ArgsMap
 	var event interface{}
-	//	var eventTo interface{}
+	//var eventTo interface{}
 	var ledgerMap ArgsMap
 	var ledgerBytes interface{}
 	var found bool
@@ -3097,6 +3095,13 @@ func (t *SimpleChaincode) transferAsset(stub shim.ChaincodeStubInterface, args [
 
 	accountID=""
 	fmt.Println("args[0]=",args[0])
+	jsonData:=args[0]
+	result := strings.Split(jsonData, ",")
+	fmt.Println("result of Split=" , result)
+    /*var pro AccountFrom	
+    err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&pro)*/
+
+    //fmt.Println(pro.AssetID)
 	eventBytes := []byte(args[0])
 	log.Debugf("createAccount arg: %s", args[0])
 	fmt.Println("args[0]",args[0])
