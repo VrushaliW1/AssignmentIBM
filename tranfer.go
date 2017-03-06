@@ -35,7 +35,7 @@ type ContractState struct {
 	ActiveAssets map[string]bool  `json:"activeAssets"`
 	ActiveAccounts map[string]bool  `json:"activeAccounts"`
 	IssueAccounts map[string]bool  `json:"IssueAccounts"`
-	TransferAccounts map[string]bool  `json:"TransferAccounts"`
+	//TransferAccounts map[string]bool  `json:"TransferAccounts"`
 }
 //*************************************************** Recent 
 // RECENTSTATESKEY is used as key for recent states bucket
