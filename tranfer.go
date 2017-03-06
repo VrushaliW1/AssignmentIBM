@@ -232,6 +232,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	if function == "readAsset" {
 		return t.readAsset(stub, args)
+	} else if function == "readAccount" {
+		return t.readAccount(stub, args)
 	} else if function == "readAllAssets" {
 		return t.readAllAssets(stub, args)
 	} else if function == "readRecentStates" {
@@ -1078,6 +1080,77 @@ func (t *SimpleChaincode) readAsset(stub shim.ChaincodeStubInterface, args []str
 	assetBytes, err = stub.GetState(sAssetKey)
 	if err != nil {
 		log.Errorf("readAsset assetID %s of type %s failed GETSTATE", assetID, assetType)
+		return nil, err
+	}
+
+	return assetBytes, nil
+}
+
+//*************************************
+//readAccount
+//*************************************
+
+func (t *SimpleChaincode) readAccount(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+	var accountID string
+	var accountType string
+	var accountName string
+	var argsMap ArgsMap
+	var request interface{}
+	var assetBytes []byte
+	var found bool
+	var err error
+
+	requestBytes := []byte(args[0])
+	fmt.Println("accountType first =", accountType)
+	fmt.Println(requestBytes)
+	log.Debugf("readAccount arg: %s", args[0])
+
+	err = json.Unmarshal(requestBytes, &request)
+	if err != nil {
+		log.Errorf("readAccount failed to unmarshal arg: %s", err)
+		return nil, err
+	}
+
+	argsMap, found = request.(map[string]interface{})
+	if !found {
+		err := errors.New("readAccount arg is not a map shape")
+		log.Error(err)
+		return nil, err
+	}
+
+	// is assetID present or blank?
+	assetIDBytes, found := getObject(argsMap, ACCOUNTID)
+	if found {
+		accountID, found = assetIDBytes.(string)
+		if !found || accountID == "" {
+			err := errors.New("readAccount arg does not include accountID")
+			log.Error(err)
+			return nil, err
+		}
+	}
+	// Is asset name present?
+	assetTypeBytes, found := getObject(argsMap, ACCOUNTNAME)
+	if found {
+		accountName, found = assetTypeBytes.(string)
+		if !found || accountName == "" {
+			err := errors.New("createAccount arg does not include accountName ")
+			log.Error(err)
+			return nil, err
+		}
+	}
+	fmt.Println("accountType second =", accountType)
+	sMsg := "Inside readAccount accountName: " + accountName
+	log.Info(sMsg)
+	
+	sMsgTyoe := "Inside readAccount accountType: " + accountType
+	log.Info(sMsgTyoe)
+	fmt.Println("accountType 3rd =", accountType)
+	sAssetKey := accountID + "_" + accountType
+	fmt.Println(sAssetKey)
+	// Get the state from the ledger
+	assetBytes, err = stub.GetState(sAssetKey)
+	if err != nil {
+		log.Errorf("readAccount accountID %s of type %s failed GETSTATE", accountID, accountType)
 		return nil, err
 	}
 
