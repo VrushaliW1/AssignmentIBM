@@ -3095,10 +3095,16 @@ func (t *SimpleChaincode) transferAsset(stub shim.ChaincodeStubInterface, args [
 
 	accountID=""
 	fmt.Println("args[0]=",args[0])
+	//state.TransferAccounts[]
 	jsonData:=args[0]
 	result := strings.Split(jsonData, ",")
 	fmt.Println("result of Split=" , result)
-    /*var pro AccountFrom	
+	from := make([]string, 3)
+	from[0] = result[0]
+	from[1] = result[1]
+	from[2] = result[2]
+	fmt.Println("from array=",from)
+	/*var pro AccountFrom	
     err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&pro)*/
 
     //fmt.Println(pro.AssetID)
