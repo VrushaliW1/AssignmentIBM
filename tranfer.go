@@ -3096,8 +3096,7 @@ func (t *SimpleChaincode) transferAsset(stub shim.ChaincodeStubInterface, args [
 	}
 
 	accountID=""
-//	amount = 0
-
+	fmt.Println("args[0]=",args[0])
 	eventBytes := []byte(args[0])
 	log.Debugf("createAccount arg: %s", args[0])
 	fmt.Println("args[0]",args[0])
