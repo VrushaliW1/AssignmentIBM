@@ -12,6 +12,7 @@ import (
 	"time"
 	 "sort"
 	 "encoding/gob"
+	 "bytes"
 )
 
 //***************************************************
@@ -3123,7 +3124,7 @@ func (t *SimpleChaincode) transferAsset(stub shim.ChaincodeStubInterface, args [
     err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&pro)*/
 
     //fmt.Println(pro.AssetID)
-	eventBytes := []byte(stringByte)
+	eventBytes := []byte(bs)
 	log.Debugf("createAccount arg: %s", args[0])
 	fmt.Println("eventBytes=",eventBytes)
 	err = json.Unmarshal(eventBytes, &event)
