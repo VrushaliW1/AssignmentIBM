@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 	 "sort"
+	 "encoding/gob"
 )
 
 //***************************************************
@@ -3105,15 +3106,19 @@ func (t *SimpleChaincode) transferAsset(stub shim.ChaincodeStubInterface, args [
 	fromAcc[1] = result[2]
 	fromAcc[2] = result[3]
 	fmt.Println("fromAcc array=",fromAcc)
-	stringByte := strings.Join(fromAcc, "\x20\x00") // x20 = space and x00 = null
+	//strs := []string{"/id", "name", "amt"}
+    buf := &bytes.Buffer{}
+    gob.NewEncoder(buf).Encode(fromAcc)
+    bs := buf.Bytes()
+    fmt.Printf("%q", bs)
+	/*stringByte := strings.Join(fromAcc, "\x20\x00") // x20 = space and x00 = null
   	fmt.Println([]byte(stringByte))  
-  	fmt.Println(string([]byte(stringByte)))
+  	fmt.Println(string([]byte(stringByte)))*/
 	/*toAcc := make([]string, 3)
 	toAcc[0] = result[1]
 	toAcc[1] = result[2]
 	toAcc[2] = result[3]
 	fmt.Println("toAcc array=",toAcc)
-
 	/*var pro AccountFrom	
     err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&pro)*/
 
