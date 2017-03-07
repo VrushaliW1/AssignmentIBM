@@ -3120,7 +3120,7 @@ func (t *SimpleChaincode) transferAsset(stub shim.ChaincodeStubInterface, args [
     //fmt.Println(pro.AssetID)
 	eventBytes := []byte(stringByte)
 	log.Debugf("createAccount arg: %s", args[0])
-	fmt.Println("args[0]",args[0])
+	fmt.Println("eventBytes=",eventBytes)
 	err = json.Unmarshal(eventBytes, &event)
 	if err != nil {
 		log.Errorf("createAccount failed to unmarshal arg: %s", err)
