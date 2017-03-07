@@ -3101,12 +3101,14 @@ func (t *SimpleChaincode) transferAsset(stub shim.ChaincodeStubInterface, args [
 	fmt.Println("result of Split=" , result)
 	
 	fromAcc := make([]string, 3)
-	fromAcc[0] = result[0]
+	fromAcc[0] = result[1]
 	fromAcc[1] = result[2]
 	fromAcc[2] = result[3]
 	fmt.Println("fromAcc array=",fromAcc)
-
-	toAcc := make([]string, 3)
+	stringByte := "\x00" + strings.Join(fromAcc, "\x20\x00") // x20 = space and x00 = null
+  	fmt.Println([]byte(stringByte))  
+  	fmt.Println(string([]byte(stringByte)))
+	/*toAcc := make([]string, 3)
 	toAcc[0] = result[1]
 	toAcc[1] = result[2]
 	toAcc[2] = result[3]
@@ -3116,7 +3118,7 @@ func (t *SimpleChaincode) transferAsset(stub shim.ChaincodeStubInterface, args [
     err = json.NewDecoder(strings.NewReader(jsonData)).Decode(&pro)*/
 
     //fmt.Println(pro.AssetID)
-	eventBytes := []byte(args[0])
+	eventBytes := []byte(stringByte)
 	log.Debugf("createAccount arg: %s", args[0])
 	fmt.Println("args[0]",args[0])
 	err = json.Unmarshal(eventBytes, &event)
