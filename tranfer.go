@@ -3105,7 +3105,7 @@ func (t *SimpleChaincode) transferAsset(stub shim.ChaincodeStubInterface, args [
 	fromAcc[1] = result[2]
 	fromAcc[2] = result[3]
 	fmt.Println("fromAcc array=",fromAcc)
-	stringByte := "\x00" + strings.Join(fromAcc, "\x20\x00") // x20 = space and x00 = null
+	stringByte := strings.Join(fromAcc, "\x20\x00") // x20 = space and x00 = null
   	fmt.Println([]byte(stringByte))  
   	fmt.Println(string([]byte(stringByte)))
 	/*toAcc := make([]string, 3)
